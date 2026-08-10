@@ -49,7 +49,7 @@ export function useAudio() {
     }
   };
 
-  const playSpeech = (text: string, lang = "ar-SA", onEnded?: () => void) => {
+  const playSpeech = async (text: string, lang = "ar-SA", onEnded?: () => void) => {
     const cleanText = text.replace(/^speech:/i, "").trim();
     if (!cleanText) return;
 
@@ -57,28 +57,57 @@ export function useAudio() {
       setError(null);
       Speech.stop();
       if (soundRef.current) {
-        soundRef.current.unloadAsync().catch(() => {});
+        await soundRef.current.unloadAsync().catch(() => {});
         soundRef.current = null;
       }
+
+      setIsLoading(true);
       setIsPlaying(true);
       setCurrentUrl(`speech:${cleanText}`);
-      Speech.speak(cleanText, {
-        language: lang,
-        pitch: 1.0,
-        rate: 0.8,
-        onDone: () => {
-          setIsPlaying(false);
-          if (onEnded) onEnded();
-        },
-        onError: (e) => {
-          console.warn("Speech error:", e);
-          setIsPlaying(false);
-          setError("Gagal memutar suara");
-        },
-      });
+
+      // High-quality female Arabic audio stream (works on all physical Android APK builds)
+      const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=ar&client=tw-ob`;
+
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: ttsUrl },
+          { shouldPlay: true },
+          (status) => {
+            if (status.isLoaded) {
+              setIsPlaying(status.isPlaying);
+              if (status.didJustFinish && !status.isLooping) {
+                setIsPlaying(false);
+                if (onEnded) onEnded();
+              }
+            } else if (status.error) {
+              console.warn("TTS Audio stream error, trying device Speech:", status.error);
+            }
+          }
+        );
+        soundRef.current = sound;
+        setIsLoading(false);
+      } catch (streamErr) {
+        console.warn("Stream failed, falling back to device Speech.speak:", streamErr);
+        Speech.speak(cleanText, {
+          language: lang,
+          pitch: 1.0,
+          rate: 0.8,
+          onDone: () => {
+            setIsPlaying(false);
+            if (onEnded) onEnded();
+          },
+          onError: (e) => {
+            console.warn("Speech error:", e);
+            setIsPlaying(false);
+            setError("Gagal memutar suara");
+          },
+        });
+        setIsLoading(false);
+      }
     } catch (err) {
       console.warn("Speech exception:", err);
       setIsPlaying(false);
+      setIsLoading(false);
     }
   };
 
