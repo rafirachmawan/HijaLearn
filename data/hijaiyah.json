@@ -1,0 +1,338 @@
+[
+  {
+    "id": 1,
+    "name": "Alif",
+    "arabic": "ا",
+    "transliteration": "Alif",
+    "harakat": {
+      "fathah": { "arabic": "أَ", "latin": "A", "sound": "a" },
+      "kasrah": { "arabic": "إِ", "latin": "I", "sound": "i" },
+      "dhommah": { "arabic": "أُ", "latin": "U", "sound": "u" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/alif.mp3"
+  },
+  {
+    "id": 2,
+    "name": "Ba",
+    "arabic": "ب",
+    "transliteration": "Ba",
+    "harakat": {
+      "fathah": { "arabic": "بَ", "latin": "Ba", "sound": "ba" },
+      "kasrah": { "arabic": "بِ", "latin": "Bi", "sound": "bi" },
+      "dhommah": { "arabic": "بُ", "latin": "Bu", "sound": "bu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/ba.mp3"
+  },
+  {
+    "id": 3,
+    "name": "Ta",
+    "arabic": "ت",
+    "transliteration": "Ta",
+    "harakat": {
+      "fathah": { "arabic": "تَ", "latin": "Ta", "sound": "ta" },
+      "kasrah": { "arabic": "تِ", "latin": "Ti", "sound": "ti" },
+      "dhommah": { "arabic": "تُ", "latin": "Tu", "sound": "tu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/taa.mp3"
+  },
+  {
+    "id": 4,
+    "name": "Tsa",
+    "arabic": "ث",
+    "transliteration": "Tsa",
+    "harakat": {
+      "fathah": { "arabic": "ثَ", "latin": "Tsa", "sound": "tsa" },
+      "kasrah": { "arabic": "ثِ", "latin": "Tsi", "sound": "tsi" },
+      "dhommah": { "arabic": "ثُ", "latin": "Tsu", "sound": "tsu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/thaa.mp3"
+  },
+  {
+    "id": 5,
+    "name": "Jim",
+    "arabic": "ج",
+    "transliteration": "Jim",
+    "harakat": {
+      "fathah": { "arabic": "جَ", "latin": "Ja", "sound": "ja" },
+      "kasrah": { "arabic": "جِ", "latin": "Ji", "sound": "ji" },
+      "dhommah": { "arabic": "جُ", "latin": "Ju", "sound": "ju" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/jiim.mp3"
+  },
+  {
+    "id": 6,
+    "name": "Ha",
+    "arabic": "ح",
+    "transliteration": "Ha",
+    "harakat": {
+      "fathah": { "arabic": "حَ", "latin": "Ha", "sound": "ha" },
+      "kasrah": { "arabic": "حِ", "latin": "Hi", "sound": "hi" },
+      "dhommah": { "arabic": "حُ", "latin": "Hu", "sound": "hu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/hha.mp3"
+  },
+  {
+    "id": 7,
+    "name": "Kha",
+    "arabic": "خ",
+    "transliteration": "Kha",
+    "harakat": {
+      "fathah": { "arabic": "خَ", "latin": "Kha", "sound": "kha" },
+      "kasrah": { "arabic": "خِ", "latin": "Khi", "sound": "khi" },
+      "dhommah": { "arabic": "خُ", "latin": "Khu", "sound": "khu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/kha.mp3"
+  },
+  {
+    "id": 8,
+    "name": "Dal",
+    "arabic": "د",
+    "transliteration": "Dal",
+    "harakat": {
+      "fathah": { "arabic": "دَ", "latin": "Da", "sound": "da" },
+      "kasrah": { "arabic": "دِ", "latin": "Di", "sound": "di" },
+      "dhommah": { "arabic": "دُ", "latin": "Du", "sound": "du" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/daal.mp3"
+  },
+  {
+    "id": 9,
+    "name": "Dzal",
+    "arabic": "ذ",
+    "transliteration": "Dzal",
+    "harakat": {
+      "fathah": { "arabic": "ذَ", "latin": "Dza", "sound": "dza" },
+      "kasrah": { "arabic": "ذِ", "latin": "Dzi", "sound": "dzi" },
+      "dhommah": { "arabic": "ذُ", "latin": "Dzu", "sound": "dzu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/dhaal.mp3"
+  },
+  {
+    "id": 10,
+    "name": "Ra",
+    "arabic": "ر",
+    "transliteration": "Ra",
+    "harakat": {
+      "fathah": { "arabic": "رَ", "latin": "Ra", "sound": "ra" },
+      "kasrah": { "arabic": "رِ", "latin": "Ri", "sound": "ri" },
+      "dhommah": { "arabic": "رُ", "latin": "Ru", "sound": "ru" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/raa.mp3"
+  },
+  {
+    "id": 11,
+    "name": "Zai",
+    "arabic": "ز",
+    "transliteration": "Zai",
+    "harakat": {
+      "fathah": { "arabic": "زَ", "latin": "Za", "sound": "za" },
+      "kasrah": { "arabic": "زِ", "latin": "Zi", "sound": "zi" },
+      "dhommah": { "arabic": "زُ", "latin": "Zu", "sound": "zu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/zaay.mp3"
+  },
+  {
+    "id": 12,
+    "name": "Sin",
+    "arabic": "س",
+    "transliteration": "Sin",
+    "harakat": {
+      "fathah": { "arabic": "سَ", "latin": "Sa", "sound": "sa" },
+      "kasrah": { "arabic": "سِ", "latin": "Si", "sound": "si" },
+      "dhommah": { "arabic": "سُ", "latin": "Su", "sound": "su" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/siin.mp3"
+  },
+  {
+    "id": 13,
+    "name": "Syin",
+    "arabic": "ش",
+    "transliteration": "Syin",
+    "harakat": {
+      "fathah": { "arabic": "شَ", "latin": "Sya", "sound": "sya" },
+      "kasrah": { "arabic": "شِ", "latin": "Syi", "sound": "syi" },
+      "dhommah": { "arabic": "شُ", "latin": "Syu", "sound": "syu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/shiin.mp3"
+  },
+  {
+    "id": 14,
+    "name": "Shad",
+    "arabic": "ص",
+    "transliteration": "Shad",
+    "harakat": {
+      "fathah": { "arabic": "صَ", "latin": "Sha", "sound": "sha" },
+      "kasrah": { "arabic": "صِ", "latin": "Shi", "sound": "shi" },
+      "dhommah": { "arabic": "صُ", "latin": "Shu", "sound": "shu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/saad.mp3"
+  },
+  {
+    "id": 15,
+    "name": "Dhad",
+    "arabic": "ض",
+    "transliteration": "Dhad",
+    "harakat": {
+      "fathah": { "arabic": "ضَ", "latin": "Dha", "sound": "dha" },
+      "kasrah": { "arabic": "ضِ", "latin": "Dhi", "sound": "dhi" },
+      "dhommah": { "arabic": "ضُ", "latin": "Dhu", "sound": "dhu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/daad.mp3"
+  },
+  {
+    "id": 16,
+    "name": "Tha",
+    "arabic": "ط",
+    "transliteration": "Tha",
+    "harakat": {
+      "fathah": { "arabic": "طَ", "latin": "Tha", "sound": "tha" },
+      "kasrah": { "arabic": "طِ", "latin": "Thi", "sound": "thi" },
+      "dhommah": { "arabic": "طُ", "latin": "Thu", "sound": "thu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/tah.mp3"
+  },
+  {
+    "id": 17,
+    "name": "Zha",
+    "arabic": "ظ",
+    "transliteration": "Zha",
+    "harakat": {
+      "fathah": { "arabic": "ظَ", "latin": "Zha", "sound": "zha" },
+      "kasrah": { "arabic": "ظِ", "latin": "Zhi", "sound": "zhi" },
+      "dhommah": { "arabic": "ظُ", "latin": "Zhu", "sound": "zhu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/zah.mp3"
+  },
+  {
+    "id": 18,
+    "name": "Ain",
+    "arabic": "ع",
+    "transliteration": "Ain",
+    "harakat": {
+      "fathah": { "arabic": "عَ", "latin": "'A", "sound": "'a" },
+      "kasrah": { "arabic": "عِ", "latin": "'I", "sound": "'i" },
+      "dhommah": { "arabic": "عُ", "latin": "'U", "sound": "'u" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/ayn.mp3"
+  },
+  {
+    "id": 19,
+    "name": "Ghain",
+    "arabic": "غ",
+    "transliteration": "Ghain",
+    "harakat": {
+      "fathah": { "arabic": "غَ", "latin": "Gha", "sound": "gha" },
+      "kasrah": { "arabic": "غِ", "latin": "Ghi", "sound": "ghi" },
+      "dhommah": { "arabic": "غُ", "latin": "Ghu", "sound": "ghu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/ghayn.mp3"
+  },
+  {
+    "id": 20,
+    "name": "Fa",
+    "arabic": "ف",
+    "transliteration": "Fa",
+    "harakat": {
+      "fathah": { "arabic": "فَ", "latin": "Fa", "sound": "fa" },
+      "kasrah": { "arabic": "فِ", "latin": "Fi", "sound": "fi" },
+      "dhommah": { "arabic": "فُ", "latin": "Fu", "sound": "fu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/faa.mp3"
+  },
+  {
+    "id": 21,
+    "name": "Qaf",
+    "arabic": "ق",
+    "transliteration": "Qaf",
+    "harakat": {
+      "fathah": { "arabic": "قَ", "latin": "Qa", "sound": "qa" },
+      "kasrah": { "arabic": "قِ", "latin": "Qi", "sound": "qi" },
+      "dhommah": { "arabic": "قُ", "latin": "Qu", "sound": "qu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/qaaf.mp3"
+  },
+  {
+    "id": 22,
+    "name": "Kaf",
+    "arabic": "ك",
+    "transliteration": "Kaf",
+    "harakat": {
+      "fathah": { "arabic": "كَ", "latin": "Ka", "sound": "ka" },
+      "kasrah": { "arabic": "كِ", "latin": "Ki", "sound": "ki" },
+      "dhommah": { "arabic": "كُ", "latin": "Ku", "sound": "ku" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/kaaf.mp3"
+  },
+  {
+    "id": 23,
+    "name": "Lam",
+    "arabic": "ل",
+    "transliteration": "Lam",
+    "harakat": {
+      "fathah": { "arabic": "لَ", "latin": "La", "sound": "la" },
+      "kasrah": { "arabic": "لِ", "latin": "Li", "sound": "li" },
+      "dhommah": { "arabic": "لُ", "latin": "Lu", "sound": "lu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/laam.mp3"
+  },
+  {
+    "id": 24,
+    "name": "Mim",
+    "arabic": "م",
+    "transliteration": "Mim",
+    "harakat": {
+      "fathah": { "arabic": "مَ", "latin": "Ma", "sound": "ma" },
+      "kasrah": { "arabic": "مِ", "latin": "Mi", "sound": "mi" },
+      "dhommah": { "arabic": "مُ", "latin": "Mu", "sound": "mu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/miim.mp3"
+  },
+  {
+    "id": 25,
+    "name": "Nun",
+    "arabic": "ن",
+    "transliteration": "Nun",
+    "harakat": {
+      "fathah": { "arabic": "نَ", "latin": "Na", "sound": "na" },
+      "kasrah": { "arabic": "نِ", "latin": "Ni", "sound": "ni" },
+      "dhommah": { "arabic": "نُ", "latin": "Nu", "sound": "nu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/nuun.mp3"
+  },
+  {
+    "id": 26,
+    "name": "Waw",
+    "arabic": "و",
+    "transliteration": "Waw",
+    "harakat": {
+      "fathah": { "arabic": "وَ", "latin": "Wa", "sound": "wa" },
+      "kasrah": { "arabic": "وِ", "latin": "Wi", "sound": "wi" },
+      "dhommah": { "arabic": "وُ", "latin": "Wu", "sound": "wu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/waw.mp3"
+  },
+  {
+    "id": 27,
+    "name": "Ha",
+    "arabic": "هـ",
+    "transliteration": "Ha",
+    "harakat": {
+      "fathah": { "arabic": "هَ", "latin": "Ha", "sound": "ha" },
+      "kasrah": { "arabic": "هِ", "latin": "Hi", "sound": "hi" },
+      "dhommah": { "arabic": "هُ", "latin": "Hu", "sound": "hu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/ha.mp3"
+  },
+  {
+    "id": 28,
+    "name": "Ya",
+    "arabic": "ي",
+    "transliteration": "Ya",
+    "harakat": {
+      "fathah": { "arabic": "يَ", "latin": "Ya", "sound": "ya" },
+      "kasrah": { "arabic": "يِ", "latin": "Yi", "sound": "yi" },
+      "dhommah": { "arabic": "يُ", "latin": "Yu", "sound": "yu" }
+    },
+    "audio": "https://arabicreadingcourse.com/audio/isolated-letters/ya.mp3"
+  }
+]
