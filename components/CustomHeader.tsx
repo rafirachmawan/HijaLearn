@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -32,7 +32,11 @@ export function CustomHeader({ title, subtitle, showBack, showLogo = true, right
               </TouchableOpacity>
             ) : showLogo ? (
               <View style={styles.logoBox}>
-                <Ionicons name="book" size={18} color="#FFFFFF" />
+                <Image
+                  source={require("../assets/logo.png")}
+                  style={styles.logoImage}
+                  resizeMode="cover"
+                />
               </View>
             ) : null}
 
@@ -94,12 +98,18 @@ const styles = StyleSheet.create({
     flex: 1
   },
   logoBox: {
-    width: 38,
-    height: 38,
+    width: 42,
+    height: 42,
     borderRadius: 12,
-    backgroundColor: Colors.primary,
+    overflow: "hidden",
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center"
+  },
+  logoImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
   },
   backButton: {
     width: 36,

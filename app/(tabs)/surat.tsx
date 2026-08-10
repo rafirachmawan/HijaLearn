@@ -11,6 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { fetchSurahList, Surah } from "../../services/quranApi";
 import { useProgress } from "../../hooks/useProgress";
 import { useNetwork } from "../../hooks/useNetwork";
@@ -34,12 +35,43 @@ export default function SuratTabScreen() {
       item.number.toString().includes(searchQuery)
   );
 
+  const totalSurahs = surahList?.length || 37;
+  const percent = Math.round((completedSurahs.length / totalSurahs) * 100);
+
   return (
     <View style={styles.container}>
-      {/* Search & Header */}
+      {/* Header Banner & Search */}
       <View style={styles.headerArea}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color={Colors.textSecondary} />
+        {/* Hero Banner Card */}
+        <LinearGradient
+          colors={["#0F766E", "#14B8A6"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.heroBanner, Shadows.medium]}
+        >
+          <View style={styles.bannerTopRow}>
+            <View style={styles.bannerTitleGroup}>
+              <Text style={styles.bannerTitle}>Surat-surat Pendek</Text>
+              <Text style={styles.bannerSubtitle}>Juz 30 • Audio Ayat & Terjemahan</Text>
+            </View>
+            <View style={styles.countBadge}>
+              <Ionicons name="trophy" size={14} color="#0F766E" />
+              <Text style={styles.countBadgeText}>{completedSurahs.length} / {totalSurahs}</Text>
+            </View>
+          </View>
+
+          {/* Progress Bar Row */}
+          <View style={styles.progressRow}>
+            <View style={styles.progressBarTrack}>
+              <View style={[styles.progressBarFill, { width: `${Math.min(percent, 100)}%` }]} />
+            </View>
+            <Text style={styles.progressPercentText}>{percent}%</Text>
+          </View>
+        </LinearGradient>
+
+        {/* Search Bar Container */}
+        <View style={[styles.searchBar, Shadows.small]}>
+          <Ionicons name="search" size={20} color={Colors.primary} />
           <TextInput
             style={styles.searchInput}
             placeholder="Cari surat (An-Nas, Al-Ikhlas, 114)..."
@@ -48,7 +80,7 @@ export default function SuratTabScreen() {
             onChangeText={setSearchQuery}
           />
           {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchQuery("")}>
+            <TouchableOpacity onPress={() => setSearchQuery("")} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
               <Ionicons name="close-circle" size={18} color={Colors.textSecondary} />
             </TouchableOpacity>
           )}
@@ -141,23 +173,84 @@ const styles = StyleSheet.create({
   },
   headerArea: {
     padding: 16,
-    backgroundColor: Colors.cardBg,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border
+    gap: 12,
+    backgroundColor: Colors.background,
+  },
+  heroBanner: {
+    borderRadius: 20,
+    padding: 16,
+    gap: 14,
+  },
+  bannerTopRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  bannerTitleGroup: {
+    flex: 1,
+    marginRight: 8,
+  },
+  bannerTitle: {
+    fontFamily: Fonts.bold,
+    fontSize: 16,
+    color: "#FFFFFF",
+  },
+  bannerSubtitle: {
+    fontFamily: Fonts.medium,
+    fontSize: 11,
+    color: "#CCFBF1",
+    marginTop: 2,
+  },
+  countBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+  },
+  countBadgeText: {
+    fontFamily: Fonts.bold,
+    fontSize: 12,
+    color: "#0F766E",
+  },
+  progressRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  progressBarTrack: {
+    flex: 1,
+    height: 8,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    borderRadius: 4,
+    overflow: "hidden",
+  },
+  progressBarFill: {
+    height: "100%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 4,
+  },
+  progressPercentText: {
+    fontFamily: Fonts.bold,
+    fontSize: 12,
+    color: "#FFFFFF",
   },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.background,
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    height: 44,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    height: 48,
     borderWidth: 1,
-    borderColor: Colors.border
+    borderColor: "#E2E8F0",
   },
   searchInput: {
+    fontFamily: Fonts.medium,
     flex: 1,
-    marginLeft: 8,
+    marginLeft: 10,
     fontSize: 14,
     color: Colors.textPrimary
   },

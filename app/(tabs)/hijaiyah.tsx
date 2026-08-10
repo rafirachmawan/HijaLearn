@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import hijaiyahData from "../../data/hijaiyah.json";
 import { useProgress } from "../../hooks/useProgress";
 import { Colors, Fonts, Shadows } from "../../constants/theme";
@@ -18,21 +19,42 @@ export default function HijaiyahTabScreen() {
       item.arabic.includes(searchQuery)
   );
 
+  const percent = Math.round((completedLetters.length / 28) * 100);
+
   return (
     <View style={styles.container}>
-      {/* Header Info & Search */}
+      {/* Header Banner & Search */}
       <View style={styles.headerArea}>
-        <View style={styles.progressInfoRow}>
-          <Text style={styles.headerTitle}>28 Huruf Hijaiyah Dasar</Text>
-          <View style={styles.countBadge}>
-            <Text style={styles.countBadgeText}>
-              {completedLetters.length} / 28 Selesai
-            </Text>
+        {/* Banner Card */}
+        <LinearGradient
+          colors={["#0F766E", "#14B8A6"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.heroBanner, Shadows.medium]}
+        >
+          <View style={styles.bannerTopRow}>
+            <View style={styles.bannerTitleGroup}>
+              <Text style={styles.bannerTitle}>28 Huruf Hijaiyah Dasar</Text>
+              <Text style={styles.bannerSubtitle}>Bentuk huruf, harakat & audio pelafalan</Text>
+            </View>
+            <View style={styles.countBadge}>
+              <Ionicons name="trophy" size={14} color="#0F766E" />
+              <Text style={styles.countBadgeText}>{completedLetters.length} / 28</Text>
+            </View>
           </View>
-        </View>
 
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color={Colors.textSecondary} />
+          {/* Progress Bar Row */}
+          <View style={styles.progressRow}>
+            <View style={styles.progressBarTrack}>
+              <View style={[styles.progressBarFill, { width: `${percent}%` }]} />
+            </View>
+            <Text style={styles.progressPercentText}>{percent}%</Text>
+          </View>
+        </LinearGradient>
+
+        {/* Search Bar Container */}
+        <View style={[styles.searchBar, Shadows.small]}>
+          <Ionicons name="search" size={20} color={Colors.primary} />
           <TextInput
             style={styles.searchInput}
             placeholder="Cari huruf (misal: Alif, Ba, Ta)..."
@@ -41,7 +63,7 @@ export default function HijaiyahTabScreen() {
             onChangeText={setSearchQuery}
           />
           {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchQuery("")}>
+            <TouchableOpacity onPress={() => setSearchQuery("")} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
               <Ionicons name="close-circle" size={18} color={Colors.textSecondary} />
             </TouchableOpacity>
           )}
@@ -97,46 +119,84 @@ const styles = StyleSheet.create({
   },
   headerArea: {
     padding: 16,
-    backgroundColor: Colors.cardBg,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border
+    gap: 12,
+    backgroundColor: Colors.background,
   },
-  progressInfoRow: {
+  heroBanner: {
+    borderRadius: 20,
+    padding: 16,
+    gap: 14,
+  },
+  bannerTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12
+    alignItems: "flex-start",
   },
-  headerTitle: {
+  bannerTitleGroup: {
+    flex: 1,
+    marginRight: 8,
+  },
+  bannerTitle: {
     fontFamily: Fonts.bold,
-    fontSize: 15,
-    color: Colors.textPrimary
+    fontSize: 16,
+    color: "#FFFFFF",
+  },
+  bannerSubtitle: {
+    fontFamily: Fonts.medium,
+    fontSize: 11,
+    color: "#CCFBF1",
+    marginTop: 2,
   },
   countBadge: {
-    backgroundColor: "#E6F4F1",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: "#FFFFFF",
     paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12
+    paddingVertical: 6,
+    borderRadius: 14,
   },
   countBadgeText: {
     fontFamily: Fonts.bold,
     fontSize: 12,
-    color: Colors.primary
+    color: "#0F766E",
+  },
+  progressRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  progressBarTrack: {
+    flex: 1,
+    height: 8,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    borderRadius: 4,
+    overflow: "hidden",
+  },
+  progressBarFill: {
+    height: "100%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 4,
+  },
+  progressPercentText: {
+    fontFamily: Fonts.bold,
+    fontSize: 12,
+    color: "#FFFFFF",
   },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.background,
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    height: 44,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    height: 48,
     borderWidth: 1,
-    borderColor: Colors.border
+    borderColor: "#E2E8F0",
   },
   searchInput: {
     fontFamily: Fonts.medium,
     flex: 1,
-    marginLeft: 8,
+    marginLeft: 10,
     fontSize: 14,
     color: Colors.textPrimary
   },

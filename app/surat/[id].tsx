@@ -36,6 +36,16 @@ export default function SurahDetailScreen() {
 
   const isCompleted = completedSurahs.includes(surahNumber);
 
+  // Surahs with a separate Bismillah banner (all except Al-Fatihah=1 and At-Tawbah=9)
+  const hasSeparateBismillah = surahNumber !== 1 && surahNumber !== 9;
+
+  // Filter displayable ayahs: skip Bismillah-only first entry for surahs with banner
+  const displayAyahs = surah?.ayahs
+    ? hasSeparateBismillah
+      ? surah.ayahs.filter((a) => a.numberInSurah !== 1 || a.text.trim().length > 0)
+      : surah.ayahs
+    : [];
+
   const handlePlayAyah = (index: number) => {
     if (!surah) return;
     setIsAutoPlayingAll(false);
@@ -74,6 +84,7 @@ export default function SurahDetailScreen() {
       setPlayingAyahIndex(null);
     } else {
       setIsAutoPlayingAll(true);
+      // Always start from index 0 — Bismillah audio plays first, then continues to ayahs
       playNextSequential(0);
     }
   };
@@ -103,7 +114,7 @@ export default function SurahDetailScreen() {
         ) : (
           <FlatList
             ref={flatListRef}
-            data={surah.ayahs}
+            data={displayAyahs}
             keyExtractor={(item) => item.number.toString()}
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
@@ -162,8 +173,8 @@ export default function SurahDetailScreen() {
                   </View>
                 </View>
 
-                {/* Bismillah Header (except for Surah At-Tawbah) */}
-                {surahNumber !== 9 && (
+                {/* Bismillah Header (except for Al-Fatihah and At-Tawbah) */}
+                {hasSeparateBismillah && (
                   <View style={styles.bismillahBox}>
                     <Text style={styles.bismillahArabic}>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</Text>
                   </View>

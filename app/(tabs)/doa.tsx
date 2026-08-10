@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
@@ -162,20 +163,40 @@ export default function DoaTabScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Search Bar */}
-      <View style={styles.searchWrapper}>
+      {/* Header Banner & Search */}
+      <View style={styles.headerArea}>
+        {/* Hero Banner Card */}
+        <LinearGradient
+          colors={["#0F766E", "#14B8A6"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.heroBanner, Shadows.medium]}
+        >
+          <View style={styles.bannerTopRow}>
+            <View style={styles.bannerTitleGroup}>
+              <Text style={styles.bannerTitle}>Doa-doa Seharian</Text>
+              <Text style={styles.bannerSubtitle}>20 Doa Harian • Audio & Terjemahan</Text>
+            </View>
+            <View style={styles.countBadge}>
+              <Ionicons name="sparkles" size={14} color="#0F766E" />
+              <Text style={styles.countBadgeText}>20 Doa</Text>
+            </View>
+          </View>
+        </LinearGradient>
+
+        {/* Search Bar */}
         <View style={[styles.searchBar, Shadows.small]}>
-          <Ionicons name="search" size={18} color={Colors.textSecondary} />
+          <Ionicons name="search" size={20} color={Colors.primary} />
           <TextInput
             style={styles.searchInput}
             placeholder="Cari doa..."
-            placeholderTextColor={Colors.inactive}
+            placeholderTextColor={Colors.textSecondary}
             value={search}
             onChangeText={setSearch}
           />
           {search.length > 0 && (
-            <TouchableOpacity onPress={() => setSearch("")}>
-              <Ionicons name="close-circle" size={18} color={Colors.inactive} />
+            <TouchableOpacity onPress={() => setSearch("")} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="close-circle" size={18} color={Colors.textSecondary} />
             </TouchableOpacity>
           )}
         </View>
@@ -267,28 +288,66 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  searchWrapper: {
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 6,
+  headerArea: {
+    padding: 16,
+    gap: 12,
+    backgroundColor: Colors.background,
+  },
+  heroBanner: {
+    borderRadius: 20,
+    padding: 16,
+    gap: 14,
+  },
+  bannerTopRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  bannerTitleGroup: {
+    flex: 1,
+    marginRight: 8,
+  },
+  bannerTitle: {
+    fontFamily: Fonts.bold,
+    fontSize: 16,
+    color: "#FFFFFF",
+  },
+  bannerSubtitle: {
+    fontFamily: Fonts.medium,
+    fontSize: 11,
+    color: "#CCFBF1",
+    marginTop: 2,
+  },
+  countBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+  },
+  countBadgeText: {
+    fontFamily: Fonts.bold,
+    fontSize: 12,
+    color: "#0F766E",
   },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.cardBg,
-    borderRadius: 14,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
     paddingHorizontal: 14,
-    paddingVertical: 8,
-    gap: 8,
+    height: 48,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: "#E2E8F0",
   },
   searchInput: {
     flex: 1,
     fontFamily: Fonts.medium,
-    fontSize: 13.5,
+    fontSize: 14,
     color: Colors.textPrimary,
-    paddingVertical: 0,
+    marginLeft: 10,
   },
   categoryScrollContainer: {
     marginVertical: 4,

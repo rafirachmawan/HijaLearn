@@ -194,7 +194,11 @@ export default function OnboardingScreen() {
       >
         <View style={[styles.brandBadge, Shadows.small]}>
           <View style={styles.brandIconBox}>
-            <Ionicons name="book" size={15} color="#FFFFFF" />
+            <Image
+              source={require("../assets/logo.png")}
+              style={styles.brandLogoImage}
+              resizeMode="cover"
+            />
           </View>
           <Text style={styles.brandText}>HijaLearn</Text>
         </View>
@@ -482,12 +486,18 @@ const styles = StyleSheet.create({
     borderColor: "#E2E8F0",
   },
   brandIconBox: {
-    width: 26,
-    height: 26,
-    borderRadius: 8,
-    backgroundColor: Colors.primary,
+    width: 32,
+    height: 32,
+    borderRadius: 9,
+    overflow: "hidden",
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
+  },
+  brandLogoImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 9,
   },
   brandText: {
     fontFamily: Fonts.bold,

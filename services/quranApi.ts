@@ -82,16 +82,35 @@ export async function fetchSurahDetail(surahNumber: number): Promise<SurahDetail
       const arabicData = json.data[0];
       const indoData = json.data[1];
 
+      // For surahs other than Al-Fatihah(1) and At-Tawbah(9),
+      // the API includes Bismillah as part of Ayah 1 text.
+      // Since the UI already shows a standalone Bismillah banner,
+      // we need to strip the Bismillah text from Ayah 1 to avoid duplication.
+      const bismillahPatterns = [
+        "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+        "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+        "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِيمِ"
+      ];
+      const hasSeparateBismillah = surahNumber !== 1 && surahNumber !== 9;
+
       const ayahs: Ayah[] = arabicData.ayahs.map((a: any, idx: number) => {
         const surahPad = String(surahNumber).padStart(3, "0");
         const ayahPad = String(a.numberInSurah).padStart(3, "0");
         const audioUrl = `https://everyayah.com/data/Alafasy_128kbps/${surahPad}${ayahPad}.mp3`;
         const indoText = indoData.ayahs[idx]?.text || "";
 
+        let ayahText = a.text;
+        // Strip Bismillah prefix from Ayah 1 for surahs with separate banner
+        if (hasSeparateBismillah && a.numberInSurah === 1) {
+          for (const pattern of bismillahPatterns) {
+            ayahText = ayahText.replace(pattern, "").trim();
+          }
+        }
+
         return {
           number: a.number,
           numberInSurah: a.numberInSurah,
-          text: a.text,
+          text: ayahText,
           translation: indoText,
           transliteration: `Ayat ${a.numberInSurah}`,
           audio: audioUrl
