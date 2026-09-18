@@ -105,7 +105,7 @@ const ONBOARDING_SLIDES = [
   },
 ];
 
-const WA_NUMBER = "6285707185783";
+const WA_NUMBER = "6285196221716";
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo, saya tertarik untuk kustomisasi aplikasi seperti HijaLearn. Boleh konsultasi?")}`;
 const GAPAI_URL = "https://www.gapaidigital.my.id/";
 
@@ -124,8 +124,8 @@ export default function OnboardingScreen() {
     const cardH = isCompact
       ? Math.min(height * 0.32, 210)
       : isMedium
-      ? Math.min(height * 0.36, 260)
-      : Math.min(height * 0.38, 300);
+        ? Math.min(height * 0.36, 260)
+        : Math.min(height * 0.38, 300);
 
     const titleSize = isCompact ? 18 : isMedium ? 20 : 22;
     const titleLineH = isCompact ? 24 : isMedium ? 26 : 29;
@@ -187,20 +187,15 @@ export default function OnboardingScreen() {
 
       {/* 1. Header */}
       <View
-        style={[
-          styles.headerRow,
-          { paddingTop: Math.max(insets.top + 6, 18) },
-        ]}
+        style={[styles.headerRow, { paddingTop: Math.max(insets.top + 6, 18) }]}
       >
-        <View style={[styles.brandBadge, Shadows.small]}>
-          <View style={styles.brandIconBox}>
-            <Image
-              source={require("../assets/logo.png")}
-              style={styles.brandLogoImage}
-              resizeMode="cover"
-            />
-          </View>
-          <Text style={styles.brandText}>HijaLearn</Text>
+        <View style={styles.brandInline}>
+          <Image
+            source={require("../assets/logo.png")}
+            style={styles.inlineLogo}
+            resizeMode="cover"
+          />
+          <Text style={styles.inlineText}>HijaLearn</Text>
         </View>
 
         <TouchableOpacity
@@ -229,9 +224,7 @@ export default function OnboardingScreen() {
           renderItem={({ item }) => (
             <View style={[styles.slideItem, { width }]}>
               {/* Hero Card */}
-              <View
-                style={[styles.heroWrapper, { height: responsive.cardH }]}
-              >
+              <View style={[styles.heroWrapper, { height: responsive.cardH }]}>
                 <LinearGradient
                   colors={item.gradient}
                   start={{ x: 0, y: 0 }}
@@ -328,37 +321,39 @@ export default function OnboardingScreen() {
 
                 {/* Feature Highlight Pills */}
                 <View style={styles.featureRow}>
-                  {item.features.map((feat: { icon: string; label: string }, idx: number) => (
-                    <View
-                      key={idx}
-                      style={[
-                        styles.featureChip,
-                        { borderColor: item.badgeBorder },
-                      ]}
-                    >
+                  {item.features.map(
+                    (feat: { icon: string; label: string }, idx: number) => (
                       <View
+                        key={idx}
                         style={[
-                          styles.featureIconBg,
-                          { backgroundColor: item.badgeBg },
+                          styles.featureChip,
+                          { borderColor: item.badgeBorder },
                         ]}
                       >
-                        <Ionicons
-                          name={feat.icon as any}
-                          size={14}
-                          color={item.themeColor}
-                        />
+                        <View
+                          style={[
+                            styles.featureIconBg,
+                            { backgroundColor: item.badgeBg },
+                          ]}
+                        >
+                          <Ionicons
+                            name={feat.icon as any}
+                            size={14}
+                            color={item.themeColor}
+                          />
+                        </View>
+                        <Text
+                          style={[
+                            styles.featureLabel,
+                            { color: item.themeColor },
+                          ]}
+                          numberOfLines={1}
+                        >
+                          {feat.label}
+                        </Text>
                       </View>
-                      <Text
-                        style={[
-                          styles.featureLabel,
-                          { color: item.themeColor },
-                        ]}
-                        numberOfLines={1}
-                      >
-                        {feat.label}
-                      </Text>
-                    </View>
-                  ))}
+                    ),
+                  )}
                 </View>
 
                 {/* WhatsApp CTA on Slide 4 */}
@@ -384,7 +379,12 @@ export default function OnboardingScreen() {
       <View
         style={[
           styles.footer,
-          { paddingBottom: Math.max(insets.bottom + (Platform.OS === "android" ? 18 : 10), 28) },
+          {
+            paddingBottom: Math.max(
+              insets.bottom + (Platform.OS === "android" ? 18 : 10),
+              28,
+            ),
+          },
         ]}
       >
         <View style={styles.paginationRow}>
@@ -474,34 +474,19 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     zIndex: 10,
   },
-  brandBadge: {
+  brandInline: {
     flexDirection: "row",
     alignItems: "center",
     gap: 7,
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
   },
-  brandIconBox: {
-    width: 32,
-    height: 32,
-    borderRadius: 9,
-    overflow: "hidden",
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
+  inlineLogo: {
+    width: 36,
+    height: 36,
+    marginTop: 8,
   },
-  brandLogoImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 9,
-  },
-  brandText: {
+  inlineText: {
     fontFamily: Fonts.bold,
-    fontSize: 15,
+    fontSize: 17,
     color: Colors.textPrimary,
     letterSpacing: 0.3,
     includeFontPadding: false,
