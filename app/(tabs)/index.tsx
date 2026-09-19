@@ -1,11 +1,16 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { useProgress } from "../../hooks/useProgress";
-import { useNetwork } from "../../hooks/useNetwork";
+import { useRouter } from "expo-router";
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Colors, Fonts, Shadows } from "../../constants/theme";
+import { useNetwork } from "../../hooks/useNetwork";
+import { useProgress } from "../../hooks/useProgress";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -16,7 +21,11 @@ export default function HomeScreen() {
   const surahPercent = Math.round((completedSurahs.length / 10) * 100);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
       {/* Offline Alert Banner */}
       {!isConnected && (
         <View style={styles.offlineBanner}>
@@ -27,85 +36,89 @@ export default function HomeScreen() {
         </View>
       )}
 
-      {/* Hero Welcome Card */}
-      <View style={[styles.heroCard, Shadows.small]}>
-        <View style={styles.heroGreetingPill}>
-          <Text style={styles.heroGreetingText}>Assalamu'alaikum 👋</Text>
-        </View>
-        <Text style={styles.heroTitle}>Mari Belajar Hijaiyah & Surat Pendek</Text>
+      {/* HERO WELCOME CARD */}
+      <View style={styles.heroCard}>
+        <Text style={styles.heroGreeting}>Assalamu'alaikum</Text>
+        <Text style={styles.heroTitle}>
+          Mari Belajar Hijaiyah & Surat Pendek
+        </Text>
         <Text style={styles.heroSubtitle}>
-          Media belajar agama interaktif, mandiri, dan bebas digunakan tanpa login.
+          Media belajar interaktif tanpa login
         </Text>
 
         <View style={styles.heroStatsRow}>
           <View style={styles.heroStatItem}>
-            <Ionicons name="trophy" size={15} color={Colors.accent} />
-            <Text style={styles.heroStatText}>{unlockedBadges.length} Badge</Text>
+            <Ionicons name="trophy" size={16} color={Colors.accent} />
+            <Text style={styles.heroStatText}>{unlockedBadges.length}</Text>
           </View>
           <View style={styles.heroStatItem}>
-            <Ionicons name="grid" size={15} color={Colors.accent} />
-            <Text style={styles.heroStatText}>{completedLetters.length} Huruf</Text>
+            <Ionicons name="grid" size={16} color={Colors.accent} />
+            <Text style={styles.heroStatText}>{completedLetters.length}</Text>
           </View>
           <View style={styles.heroStatItem}>
-            <Ionicons name="book" size={15} color={Colors.accent} />
-            <Text style={styles.heroStatText}>{completedSurahs.length} Surat</Text>
+            <Ionicons name="book" size={16} color={Colors.accent} />
+            <Text style={styles.heroStatText}>{completedSurahs.length}</Text>
           </View>
         </View>
       </View>
 
-      {/* Section: Ringkasan Belajar */}
+      {/* PROGRESS DASHBOARD */}
       <View style={styles.sectionHeaderRow}>
-        <Text style={styles.sectionTitle}>Ringkasan Progres</Text>
+        <Text style={styles.sectionTitle}>Progres Belajar</Text>
         <TouchableOpacity onPress={() => router.push("/(tabs)/progres")}>
           <Text style={styles.seeAllText}>Lihat Detail ›</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.progressRow}>
-        {/* Hijaiyah Card */}
+        {/* Hijaiyah Mini Card */}
         <TouchableOpacity
-          style={[styles.progressCard, Shadows.small]}
+          style={styles.progressMiniCard}
           activeOpacity={0.8}
           onPress={() => router.push("/(tabs)/hijaiyah")}
         >
-          <View style={styles.progressCardTop}>
-            <View style={[styles.progressIconBg, { backgroundColor: "#E6F4F1" }]}>
-              <Ionicons name="grid" size={20} color={Colors.primary} />
-            </View>
-            <View style={styles.percentBadge}>
-              <Text style={styles.percentBadgeText}>{hijaiyahPercent}%</Text>
-            </View>
+          <View
+            style={[styles.progressMiniIcon, { backgroundColor: "#E6F4F1" }]}
+          >
+            <Ionicons name="grid" size={24} color={Colors.primary} />
           </View>
-          <Text style={styles.progressCardTitle}>Huruf Hijaiyah</Text>
-          <Text style={styles.progressCardSub}>{completedLetters.length} dari 28 Huruf</Text>
-
-          <View style={styles.trackBar}>
-            <View style={[styles.fillBar, { width: `${Math.min(hijaiyahPercent, 100)}%` }]} />
+          <Text style={styles.progressMiniPercent}>{hijaiyahPercent}%</Text>
+          <Text style={styles.progressMiniLabel}>Huruf Hijaiyah</Text>
+          <View style={styles.progressMiniBar}>
+            <View
+              style={[
+                styles.progressMiniFill,
+                { width: `${Math.min(hijaiyahPercent, 100)}%` },
+              ]}
+            />
           </View>
         </TouchableOpacity>
 
-        {/* Surat Card */}
+        {/* Surat Mini Card */}
         <TouchableOpacity
-          style={[styles.progressCard, Shadows.small]}
+          style={styles.progressMiniCard}
           activeOpacity={0.8}
           onPress={() => router.push("/(tabs)/surat")}
         >
-          <View style={styles.progressCardTop}>
-            <View style={[styles.progressIconBg, { backgroundColor: "#ECFDF5" }]}>
-              <Ionicons name="book" size={20} color={Colors.secondary} />
-            </View>
-            <View style={[styles.percentBadge, { backgroundColor: "#ECFDF5" }]}>
-              <Text style={[styles.percentBadgeText, { color: Colors.secondary }]}>{surahPercent}%</Text>
-            </View>
+          <View
+            style={[styles.progressMiniIcon, { backgroundColor: "#ECFDF5" }]}
+          >
+            <Ionicons name="book" size={24} color={Colors.secondary} />
           </View>
-          <Text style={styles.progressCardTitle}>Surat Pendek</Text>
-          <Text style={styles.progressCardSub}>{completedSurahs.length} Surat Selesai</Text>
-
-          <View style={styles.trackBar}>
+          <Text
+            style={[styles.progressMiniPercent, { color: Colors.secondary }]}
+          >
+            {surahPercent}%
+          </Text>
+          <Text style={styles.progressMiniLabel}>Surat Pendek</Text>
+          <View style={styles.progressMiniBar}>
             <View
               style={[
-                styles.fillBar,
-                { width: `${Math.min(surahPercent, 100)}%`, backgroundColor: Colors.secondary }
+                styles.progressMiniFill,
+                {
+                  width: `${Math.min(surahPercent, 100)}%`,
+                  backgroundColor: Colors.secondary,
+                },
               ]}
             />
           </View>
@@ -126,11 +139,17 @@ export default function HomeScreen() {
         >
           <View style={styles.menuLeftGroup}>
             <View style={[styles.menuIconBg, { backgroundColor: "#E6F4F1" }]}>
-              <Text style={[styles.arabicLetterIcon, { color: Colors.primary }]}>أ</Text>
+              <Text
+                style={[styles.arabicLetterIcon, { color: Colors.primary }]}
+              >
+                أ
+              </Text>
             </View>
             <View style={styles.menuContent}>
               <Text style={styles.menuTitle}>Belajar Hijaiyah</Text>
-              <Text style={styles.menuDesc}>28 Huruf dasar • Harakat • Audio</Text>
+              <Text style={styles.menuDesc}>
+                28 Huruf dasar • Harakat • Audio
+              </Text>
             </View>
           </View>
           <View style={styles.menuArrowBtn}>
@@ -146,11 +165,17 @@ export default function HomeScreen() {
         >
           <View style={styles.menuLeftGroup}>
             <View style={[styles.menuIconBg, { backgroundColor: "#ECFDF5" }]}>
-              <Ionicons name="book-outline" size={24} color={Colors.secondary} />
+              <Ionicons
+                name="book-outline"
+                size={24}
+                color={Colors.secondary}
+              />
             </View>
             <View style={styles.menuContent}>
               <Text style={styles.menuTitle}>Surat-surat Pendek</Text>
-              <Text style={styles.menuDesc}>Juz 30 • Terjemahan • Audio Ayat</Text>
+              <Text style={styles.menuDesc}>
+                Juz 30 • Terjemahan • Audio Ayat
+              </Text>
             </View>
           </View>
           <View style={styles.menuArrowBtn}>
@@ -170,7 +195,9 @@ export default function HomeScreen() {
             </View>
             <View style={styles.menuContent}>
               <Text style={styles.menuTitle}>Doa-doa Seharian</Text>
-              <Text style={styles.menuDesc}>20 Doa Harian • Arab • Latin • Arti</Text>
+              <Text style={styles.menuDesc}>
+                20 Doa Harian • Arab • Latin • Arti
+              </Text>
             </View>
           </View>
           <View style={styles.menuArrowBtn}>
@@ -186,7 +213,11 @@ export default function HomeScreen() {
         >
           <View style={styles.menuLeftGroup}>
             <View style={[styles.menuIconBg, { backgroundColor: "#FEF3C7" }]}>
-              <Ionicons name="extension-puzzle-outline" size={24} color="#D97706" />
+              <Ionicons
+                name="extension-puzzle-outline"
+                size={24}
+                color="#D97706"
+              />
             </View>
             <View style={styles.menuContent}>
               <Text style={styles.menuTitle}>Kuis & Game Interaktif</Text>
@@ -205,7 +236,8 @@ export default function HomeScreen() {
           <Ionicons name="sparkles" size={20} color={Colors.primary} />
         </View>
         <Text style={styles.quoteText}>
-          "Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan mengajarkannya."
+          "Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan
+          mengajarkannya."
         </Text>
         <Text style={styles.quoteAuthor}>— HR. Bukhari</Text>
       </View>
@@ -216,11 +248,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   },
   content: {
     padding: 16,
-    paddingBottom: 140
+    paddingBottom: 140,
   },
   offlineBanner: {
     backgroundColor: Colors.danger,
@@ -229,197 +261,179 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
-    gap: 10
+    gap: 10,
   },
   offlineText: {
     fontFamily: Fonts.bold,
     color: "#FFFFFF",
     fontSize: 13,
-    flex: 1
+    flex: 1,
   },
+  // HERO CARD
   heroCard: {
     backgroundColor: Colors.primary,
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 20
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 20,
   },
-  heroGreetingPill: {
-    alignSelf: "flex-start",
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 16,
-    marginBottom: 10
-  },
-  heroGreetingText: {
-    fontFamily: Fonts.bold,
+  heroGreeting: {
+    fontFamily: Fonts.semiBold,
     color: Colors.accent,
-    fontSize: 12
+    fontSize: 15,
+    marginBottom: 8,
   },
   heroTitle: {
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.extraBold,
     color: "#FFFFFF",
-    fontSize: 19,
-    lineHeight: 26,
-    marginBottom: 6
+    fontSize: 20,
+    lineHeight: 28,
+    marginBottom: 6,
   },
   heroSubtitle: {
-    fontFamily: Fonts.medium,
-    color: "rgba(255, 255, 255, 0.75)",
-    fontSize: 13,
-    lineHeight: 18,
-    marginBottom: 16
+    fontFamily: Fonts.regular,
+    color: "rgba(255, 255, 255, 0.9)",
+    fontSize: 14,
+    marginBottom: 20,
   },
   heroStatsRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8
+    gap: 10,
   },
   heroStatItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-    gap: 5
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 12,
+    gap: 6,
   },
   heroStatText: {
     fontFamily: Fonts.semiBold,
     color: "#FFFFFF",
-    fontSize: 12
+    fontSize: 14,
   },
   sectionHeaderRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12
+    marginBottom: 12,
   },
   sectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 17,
-    color: Colors.textPrimary
+    color: Colors.textPrimary,
   },
   seeAllText: {
     fontFamily: Fonts.bold,
     fontSize: 13,
-    color: Colors.primary
+    color: Colors.primary,
   },
+  // PROGRESS DASHBOARD
   progressRow: {
-    flexDirection: "row",
-    gap: 12,
-    marginBottom: 24
-  },
-  progressCard: {
-    flex: 1,
     backgroundColor: Colors.cardBg,
-    borderRadius: 20,
-    padding: 16,
+    borderRadius: 24,
+    padding: 20,
     borderWidth: 1,
-    borderColor: Colors.border
+    borderColor: Colors.border,
+    marginBottom: 24,
   },
-  progressCardTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12
+  progressMiniCard: {
+    flex: 1,
+    backgroundColor: "#F8FAFC",
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    marginRight: 12,
   },
-  progressIconBg: {
-    width: 36,
-    height: 36,
+  progressMiniIcon: {
+    width: 44,
+    height: 44,
     borderRadius: 12,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: 10,
   },
-  percentBadge: {
-    backgroundColor: "#E6F4F1",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 10
+  progressMiniPercent: {
+    fontFamily: Fonts.extraBold,
+    fontSize: 24,
+    color: Colors.textPrimary,
+    marginBottom: 4,
   },
-  percentBadgeText: {
-    fontFamily: Fonts.bold,
-    fontSize: 12,
-    color: Colors.primary
-  },
-  progressCardTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 15,
-    color: Colors.textPrimary
-  },
-  progressCardSub: {
-    fontFamily: Fonts.regular,
-    fontSize: 12,
+  progressMiniLabel: {
+    fontFamily: Fonts.semiBold,
+    fontSize: 11,
     color: Colors.textSecondary,
-    marginTop: 2,
-    marginBottom: 10
+    marginBottom: 8,
   },
-  trackBar: {
-    height: 8,
-    backgroundColor: "#F1F5F9",
-    borderRadius: 4,
-    overflow: "hidden"
+  progressMiniBar: {
+    height: 6,
+    backgroundColor: "#E2E8F0",
+    borderRadius: 3,
+    overflow: "hidden",
   },
-  fillBar: {
+  progressMiniFill: {
     height: "100%",
     backgroundColor: Colors.primary,
-    borderRadius: 4
+    borderRadius: 3,
   },
+
+  // MENU PEMBELAJARAN
   menuList: {
-    gap: 12,
-    marginBottom: 8
+    gap: 16,
+    marginBottom: 24,
   },
   menuCard: {
     backgroundColor: Colors.cardBg,
-    borderRadius: 18,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    borderRadius: 20,
+    padding: 18,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     borderWidth: 1,
-    borderColor: Colors.border
+    borderColor: Colors.border,
   },
   menuLeftGroup: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1
+    flex: 1,
   },
   menuIconBg: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
+    width: 56,
+    height: 56,
+    borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 14
+    marginRight: 16,
   },
   arabicLetterIcon: {
     fontFamily: Fonts.bold,
-    fontSize: 24
+    fontSize: 28,
   },
   menuContent: {
-    flex: 1
+    flex: 1,
   },
   menuTitle: {
     fontFamily: Fonts.bold,
-    fontSize: 15,
+    fontSize: 16,
     color: Colors.textPrimary,
-    marginBottom: 2
+    marginBottom: 4,
   },
   menuDesc: {
     fontFamily: Fonts.regular,
-    fontSize: 12,
+    fontSize: 13,
     color: Colors.textSecondary,
-    lineHeight: 16
   },
   menuArrowBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    backgroundColor: "#E6F4F1",
+    width: 40,
+    height: 40,
+    borderRadius: 14,
+    backgroundColor: Colors.primaryLight,
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 10
+    marginLeft: 12,
   },
   quoteCard: {
     backgroundColor: Colors.accentLight,
@@ -428,7 +442,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     borderWidth: 1,
-    borderColor: "#FCD34D"
+    borderColor: "#FCD34D",
   },
   quoteIconBg: {
     width: 36,
@@ -437,7 +451,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 8
+    marginBottom: 8,
   },
   quoteText: {
     fontFamily: Fonts.medium,
@@ -446,11 +460,11 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     textAlign: "center",
     lineHeight: 20,
-    marginBottom: 6
+    marginBottom: 6,
   },
   quoteAuthor: {
     fontFamily: Fonts.bold,
     fontSize: 12,
-    color: Colors.primary
-  }
+    color: Colors.primary,
+  },
 });
