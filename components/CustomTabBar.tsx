@@ -1,28 +1,39 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Colors, Fonts } from "../constants/theme";
+import { Colors } from "../constants/theme";
 
-export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+export function CustomTabBar({
+  state,
+  descriptors,
+  navigation,
+}: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
 
   // Dynamic bottom spacing: ensures tab bar is never overlapped by Android navigation bar or iOS home bar
-  const bottomMargin = Math.max(insets.bottom + 6, Platform.OS === "android" ? 14 : 10);
+  const bottomMargin = Math.max(
+    insets.bottom + 6,
+    Platform.OS === "android" ? 14 : 10,
+  );
   const backdropHeight = bottomMargin + 75;
 
   return (
     <View style={styles.container} pointerEvents="box-none">
-      {/* Smooth Backdrop Gradient — hides scrolling content cleanly behind the floating tab bar */}
+      {/* Minimal backdrop blur effect */}
       <LinearGradient
-        colors={["rgba(248, 250, 252, 0)", "rgba(248, 250, 252, 0.95)", "#F8FAFC"]}
+        colors={[
+          "rgba(248, 250, 252, 0)",
+          "rgba(248, 250, 252, 0.98)",
+          "#FFFFFF",
+        ]}
         style={[styles.backdropGradient, { height: backdropHeight }]}
         pointerEvents="none"
       />
 
-      {/* Floating Tab Bar Card */}
+      {/* Floating Tab Bar - Clean & Modern */}
       <View style={[styles.floatingWrapper, { bottom: bottomMargin }]}>
         <View style={styles.tabBarCard}>
           {state.routes.map((route, index) => {
@@ -31,8 +42,8 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
               options.tabBarLabel !== undefined
                 ? options.tabBarLabel
                 : options.title !== undefined
-                ? options.title
-                : route.name;
+                  ? options.title
+                  : route.name;
 
             const isFocused = state.index === index;
 
@@ -53,13 +64,16 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
               const event = navigation.emit({
                 type: "tabPress",
                 target: route.key,
-                canPreventDefault: true
+                canPreventDefault: true,
               });
 
               if (!isFocused && !event.defaultPrevented) {
                 navigation.navigate(route.name);
               }
             };
+
+            // Animated indicator line for active tab
+            const isActiveAnimation = isFocused ? styles.activeLine : null;
 
             return (
               <TouchableOpacity
@@ -69,23 +83,16 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
                 accessibilityLabel={options.tabBarAccessibilityLabel}
                 onPress={onPress}
                 activeOpacity={0.7}
-                style={[styles.tabItem, isFocused && styles.activeTabItem]}
+                style={styles.tabItem}
               >
                 <Ionicons
                   name={iconName}
-                  size={22}
-                  color={isFocused ? Colors.primary : Colors.inactive}
+                  size={26}
+                  color={isFocused ? Colors.primary : Colors.textSecondary}
+                  style={styles.iconContainer}
                 />
-                <Text
-                  numberOfLines={1}
-                  adjustsFontSizeToFit
-                  style={[
-                    styles.tabLabel,
-                    isFocused ? styles.activeTabLabel : styles.inactiveTabLabel
-                  ]}
-                >
-                  {typeof label === "string" ? label : route.name}
-                </Text>
+                {/* Active indicator line */}
+                {isFocused && <View style={isActiveAnimation} />}
               </TouchableOpacity>
             );
           })}
@@ -111,49 +118,41 @@ const styles = StyleSheet.create({
   },
   floatingWrapper: {
     position: "absolute",
-    left: 10,
-    right: 10,
+    left: 12,
+    right: 12,
     backgroundColor: "transparent",
   },
   tabBarCard: {
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
-    borderRadius: 26,
-    paddingVertical: 8,
-    paddingHorizontal: 8,
+    borderRadius: 28,
+    paddingVertical: 12,
+    paddingHorizontal: 6,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     borderWidth: 1,
     borderColor: "#E2E8F0",
-    elevation: 12,
-    shadowColor: "#0F5257",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.14,
-    shadowRadius: 14
+    elevation: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 8,
-    paddingHorizontal: 4,
-    borderRadius: 18,
-    gap: 3
+    gap: 4,
   },
-  activeTabItem: {
-    backgroundColor: "#E6F4F1"
+  iconContainer: {
+    marginBottom: -2,
   },
-  tabLabel: {
-    fontFamily: Fonts.medium,
-    fontSize: 11,
-    textAlign: "center"
+  activeLine: {
+    width: 32,
+    height: 3,
+    borderRadius: 1.5,
+    backgroundColor: Colors.primary,
+    marginTop: 4,
   },
-  activeTabLabel: {
-    fontFamily: Fonts.bold,
-    color: Colors.primary
-  },
-  inactiveTabLabel: {
-    fontFamily: Fonts.medium,
-    color: Colors.inactive
-  }
 });

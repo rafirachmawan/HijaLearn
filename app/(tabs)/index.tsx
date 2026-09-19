@@ -62,7 +62,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* PROGRESS DASHBOARD */}
+      {/* PROGRESS DASHBOARD - SQUARED CARDS */}
       <View style={styles.sectionHeaderRow}>
         <Text style={styles.sectionTitle}>Progres Belajar</Text>
         <TouchableOpacity onPress={() => router.push("/(tabs)/progres")}>
@@ -70,51 +70,63 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.progressRow}>
-        {/* Hijaiyah Mini Card */}
+      <View style={styles.progressContainer}>
+        {/* Hijaiyah Card - Squared Design */}
         <TouchableOpacity
-          style={styles.progressMiniCard}
+          style={styles.squaredCard}
           activeOpacity={0.8}
           onPress={() => router.push("/(tabs)/hijaiyah")}
         >
-          <View
-            style={[styles.progressMiniIcon, { backgroundColor: "#E6F4F1" }]}
-          >
-            <Ionicons name="grid" size={24} color={Colors.primary} />
+          <View style={styles.cardHeader}>
+            <View style={[styles.iconBadge, { backgroundColor: "#E6F4F1" }]}>
+              <Ionicons name="grid" size={28} color={Colors.primary} />
+            </View>
+            <Text style={styles.percentText}>{hijaiyahPercent}%</Text>
           </View>
-          <Text style={styles.progressMiniPercent}>{hijaiyahPercent}%</Text>
-          <Text style={styles.progressMiniLabel}>Huruf Hijaiyah</Text>
-          <View style={styles.progressMiniBar}>
+
+          <View style={styles.cardContent}>
+            <Text style={styles.cardTitle}>Huruf Hijaiyah</Text>
+            <Text style={styles.cardSubtext}>
+              {completedLetters.length} / 28 Huruf
+            </Text>
+          </View>
+
+          <View style={styles.progressBarOuter}>
             <View
               style={[
-                styles.progressMiniFill,
+                styles.progressBarInner,
                 { width: `${Math.min(hijaiyahPercent, 100)}%` },
               ]}
             />
           </View>
         </TouchableOpacity>
 
-        {/* Surat Mini Card */}
+        {/* Surat Card - Squared Design */}
         <TouchableOpacity
-          style={styles.progressMiniCard}
+          style={styles.squaredCard}
           activeOpacity={0.8}
           onPress={() => router.push("/(tabs)/surat")}
         >
-          <View
-            style={[styles.progressMiniIcon, { backgroundColor: "#ECFDF5" }]}
-          >
-            <Ionicons name="book" size={24} color={Colors.secondary} />
+          <View style={styles.cardHeader}>
+            <View style={[styles.iconBadge, { backgroundColor: "#ECFDF5" }]}>
+              <Ionicons name="book" size={28} color={Colors.secondary} />
+            </View>
+            <Text style={[styles.percentText, { color: Colors.secondary }]}>
+              {surahPercent}%
+            </Text>
           </View>
-          <Text
-            style={[styles.progressMiniPercent, { color: Colors.secondary }]}
-          >
-            {surahPercent}%
-          </Text>
-          <Text style={styles.progressMiniLabel}>Surat Pendek</Text>
-          <View style={styles.progressMiniBar}>
+
+          <View style={styles.cardContent}>
+            <Text style={styles.cardTitle}>Surat Pendek</Text>
+            <Text style={styles.cardSubtext}>
+              {completedSurahs.length} / 10 Surat
+            </Text>
+          </View>
+
+          <View style={styles.progressBarOuter}>
             <View
               style={[
-                styles.progressMiniFill,
+                styles.progressBarInner,
                 {
                   width: `${Math.min(surahPercent, 100)}%`,
                   backgroundColor: Colors.secondary,
@@ -330,54 +342,62 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.primary,
   },
-  // PROGRESS DASHBOARD
-  progressRow: {
-    backgroundColor: Colors.cardBg,
-    borderRadius: 24,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: Colors.border,
+  // PROGRESS DASHBOARD - SQUARED CARDS
+  progressContainer: {
+    flexDirection: "row",
+    gap: 16,
     marginBottom: 24,
   },
-  progressMiniCard: {
+  squaredCard: {
     flex: 1,
-    backgroundColor: "#F8FAFC",
-    borderRadius: 16,
-    padding: 14,
+    backgroundColor: Colors.cardBg,
+    borderRadius: 20,
+    padding: 18,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
-    marginRight: 12,
+    borderColor: Colors.border,
   },
-  progressMiniIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
+  cardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  iconBadge: {
+    width: 52,
+    height: 52,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
   },
-  progressMiniPercent: {
+  percentText: {
     fontFamily: Fonts.extraBold,
-    fontSize: 24,
+    fontSize: 28,
+    color: Colors.textPrimary,
+  },
+  cardContent: {
+    marginBottom: 16,
+  },
+  cardTitle: {
+    fontFamily: Fonts.bold,
+    fontSize: 16,
     color: Colors.textPrimary,
     marginBottom: 4,
   },
-  progressMiniLabel: {
-    fontFamily: Fonts.semiBold,
-    fontSize: 11,
+  cardSubtext: {
+    fontFamily: Fonts.regular,
+    fontSize: 13,
     color: Colors.textSecondary,
-    marginBottom: 8,
   },
-  progressMiniBar: {
-    height: 6,
+  progressBarOuter: {
+    height: 8,
     backgroundColor: "#E2E8F0",
-    borderRadius: 3,
+    borderRadius: 4,
     overflow: "hidden",
   },
-  progressMiniFill: {
+  progressBarInner: {
     height: "100%",
     backgroundColor: Colors.primary,
-    borderRadius: 3,
+    borderRadius: 4,
   },
 
   // MENU PEMBELAJARAN
