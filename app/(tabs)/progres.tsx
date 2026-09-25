@@ -1,16 +1,15 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
+  Modal,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  Modal
+  View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
 import { useProgress } from "../../hooks/useProgress";
-import { Colors, Shadows } from "../../constants/theme";
+import { Colors, Fonts } from "../../constants/theme";
 
 export default function ProgressTabScreen() {
   const {
@@ -18,7 +17,7 @@ export default function ProgressTabScreen() {
     completedSurahs,
     quizScores,
     getBadgesWithStatus,
-    resetProgress
+    resetProgress,
   } = useProgress();
 
   const [isResetModalVisible, setIsResetModalVisible] = useState(false);
@@ -31,14 +30,19 @@ export default function ProgressTabScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-      {/* Overview Stat Banner */}
-      <View style={[styles.statHeaderCard, Shadows.small]}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Ringkasan — solid primary, angka putih */}
+      <View style={styles.statCard}>
         <Text style={styles.statTitle}>Statistik Pencapaian Belajar</Text>
-        
         <View style={styles.statGrid}>
           <View style={styles.statBox}>
-            <Text style={styles.statNumber}>{completedLetters.length}/28</Text>
+            <Text style={styles.statNumber}>
+              {completedLetters.length}/28
+            </Text>
             <Text style={styles.statLabel}>Huruf Hijaiyah</Text>
           </View>
           <View style={styles.divider} />
@@ -48,16 +52,15 @@ export default function ProgressTabScreen() {
           </View>
           <View style={styles.divider} />
           <View style={styles.statBox}>
-            <Text style={styles.statNumber}>{unlockedCount}/{badges.length}</Text>
+            <Text style={styles.statNumber}>
+              {unlockedCount}/{badges.length}
+            </Text>
             <Text style={styles.statLabel}>Badge Terbuka</Text>
           </View>
         </View>
       </View>
 
-      {/* Grid Badges */}
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Lencana & Prestasi (Badges)</Text>
-      </View>
+      <Text style={styles.sectionTitle}>Lencana & Prestasi</Text>
 
       <View style={styles.badgeGrid}>
         {badges.map((badge) => (
@@ -65,30 +68,43 @@ export default function ProgressTabScreen() {
             key={badge.id}
             style={[
               styles.badgeCard,
-              Shadows.small,
-              badge.unlocked ? styles.badgeUnlocked : styles.badgeLocked
+              badge.unlocked && styles.badgeUnlocked,
             ]}
           >
-            <View style={[styles.badgeIconBg, badge.unlocked ? styles.iconUnlockedBg : styles.iconLockedBg]}>
+            <View style={styles.badgeIconBox}>
               <Ionicons
                 name={badge.icon as any}
-                size={30}
-                color={badge.unlocked ? Colors.accent : Colors.inactive}
+                size={26}
+                color={badge.unlocked ? Colors.primary : "#CBD5E1"}
               />
             </View>
 
-            <Text style={[styles.badgeTitle, !badge.unlocked && styles.textLocked]}>
+            <Text
+              style={[
+                styles.badgeTitle,
+                !badge.unlocked && styles.textLocked,
+              ]}
+            >
               {badge.title}
             </Text>
-            <Text style={styles.badgeDesc}>{badge.description}</Text>
+            <Text style={styles.badgeDesc} numberOfLines={2}>
+              {badge.description}
+            </Text>
 
-            <View style={[styles.badgeStatusChip, badge.unlocked ? styles.chipUnlocked : styles.chipLocked]}>
+            <View style={styles.badgeStatus}>
               <Ionicons
                 name={badge.unlocked ? "checkmark-circle" : "lock-closed"}
                 size={12}
-                color={badge.unlocked ? Colors.secondary : Colors.inactive}
+                color={badge.unlocked ? Colors.primary : "#CBD5E1"}
               />
-              <Text style={[styles.chipText, badge.unlocked ? styles.chipTextUnlocked : styles.chipTextLocked]}>
+              <Text
+                style={[
+                  styles.statusText,
+                  badge.unlocked
+                    ? styles.statusUnlocked
+                    : styles.statusLocked,
+                ]}
+              >
                 {badge.unlocked ? "Terbuka" : "Terkunci"}
               </Text>
             </View>
@@ -96,43 +112,52 @@ export default function ProgressTabScreen() {
         ))}
       </View>
 
-      {/* Riwayat Skor Kuis */}
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Riwayat Skor Kuis</Text>
-      </View>
+      <Text style={styles.sectionTitle}>Riwayat Skor Kuis</Text>
 
       {quizScores.length === 0 ? (
         <View style={styles.emptyQuizBox}>
-          <Ionicons name="sparkles-outline" size={26} color={Colors.textSecondary} />
-          <Text style={styles.emptyQuizText}>Belum ada kuis yang diselesaikan. Yuk coba kuis pertama kamu!</Text>
+          <Ionicons
+            name="sparkles-outline"
+            size={22}
+            color={Colors.textSecondary}
+          />
+          <Text style={styles.emptyQuizText}>
+            Belum ada kuis yang diselesaikan. Yuk coba kuis pertama kamu!
+          </Text>
         </View>
       ) : (
         <View style={styles.quizScoreList}>
           {quizScores.map((score, idx) => (
-            <View key={idx} style={[styles.scoreItem, Shadows.small]}>
-              <View style={styles.scoreIcon}>
-                <Ionicons name="trophy-outline" size={20} color={Colors.primary} />
+            <View key={idx} style={styles.scoreItem}>
+              <View style={styles.scoreIconBox}>
+                <Ionicons
+                  name="trophy-outline"
+                  size={18}
+                  color={Colors.primary}
+                />
               </View>
               <View style={styles.scoreDetails}>
-                <Text style={styles.scoreQuizId}>Kuis Modul: {score.quizId}</Text>
-                <Text style={styles.scoreText}>Skor Tertinggi: {score.score} / 100</Text>
+                <Text style={styles.scoreQuizId} numberOfLines={1}>
+                  Kuis Modul: {score.quizId}
+                </Text>
+                <Text style={styles.scoreText}>
+                  Skor Tertinggi: {score.score} / 100
+                </Text>
               </View>
             </View>
           ))}
         </View>
       )}
 
-      {/* Action Reset */}
       <TouchableOpacity
         style={styles.resetButton}
         activeOpacity={0.8}
         onPress={() => setIsResetModalVisible(true)}
       >
-        <Ionicons name="trash-outline" size={18} color={Colors.danger} />
+        <Ionicons name="trash-outline" size={16} color={Colors.danger} />
         <Text style={styles.resetButtonText}>Reset Seluruh Data Belajar</Text>
       </TouchableOpacity>
 
-      {/* Reset Confirmation Modal */}
       <Modal
         visible={isResetModalVisible}
         transparent
@@ -142,10 +167,15 @@ export default function ProgressTabScreen() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <Ionicons name="warning-outline" size={44} color={Colors.danger} />
+            <Ionicons
+              name="warning-outline"
+              size={40}
+              color={Colors.danger}
+            />
             <Text style={styles.modalTitle}>Reset Progres?</Text>
             <Text style={styles.modalDesc}>
-              Seluruh data huruf yang dipelajari, hafalan surat, skor kuis, dan badge akan dihapus secara permanen.
+              Seluruh data huruf yang dipelajari, hafalan surat, skor kuis,
+              dan badge akan dihapus secara permanen.
             </Text>
             <View style={styles.modalActions}>
               <TouchableOpacity
@@ -171,254 +201,255 @@ export default function ProgressTabScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   },
   content: {
     padding: 16,
-    paddingBottom: 140
+    paddingBottom: 140,
   },
-  statHeaderCard: {
+  statCard: {
     backgroundColor: Colors.primary,
     borderRadius: 20,
-    padding: 20,
-    marginBottom: 20
+    padding: 18,
+    marginBottom: 20,
   },
   statTitle: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#FFFFFF",
-    marginBottom: 16,
-    textAlign: "center"
+    fontFamily: Fonts.semiBold,
+    fontSize: 13,
+    color: "rgba(255,255,255,0.7)",
+    marginBottom: 14,
+    textAlign: "center",
+    letterSpacing: 0.2,
   },
   statGrid: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
   },
   statBox: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   statNumber: {
-    fontSize: 22,
-    fontWeight: "800",
-    color: Colors.accent
+    fontFamily: Fonts.extraBold,
+    fontSize: 20,
+    color: "#FFFFFF",
+    fontVariant: ["tabular-nums"],
   },
   statLabel: {
+    fontFamily: Fonts.regular,
     fontSize: 11,
-    color: "#E2E8F0",
+    color: "rgba(255,255,255,0.7)",
     marginTop: 4,
-    fontWeight: "600"
   },
   divider: {
     width: 1,
     height: 32,
-    backgroundColor: "rgba(255,255,255,0.2)"
-  },
-  sectionHeader: {
-    marginBottom: 12
+    backgroundColor: "rgba(255,255,255,0.15)",
   },
   sectionTitle: {
-    fontSize: 17,
-    fontWeight: "800",
-    color: Colors.textPrimary
+    fontFamily: Fonts.bold,
+    fontSize: 15,
+    color: Colors.textPrimary,
+    letterSpacing: -0.1,
+    marginBottom: 10,
+    paddingHorizontal: 2,
   },
   badgeGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 12,
-    marginBottom: 24
+    gap: 10,
+    marginBottom: 22,
   },
   badgeCard: {
     width: "48%",
-    backgroundColor: Colors.cardBg,
-    borderRadius: 20,
+    flexGrow: 1,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
     padding: 16,
     alignItems: "center",
-    borderWidth: 1.5,
-    borderColor: Colors.border
+    borderWidth: 1,
+    borderColor: "#E8EEF3",
   },
   badgeUnlocked: {
-    borderColor: Colors.accent,
-    backgroundColor: "#FFFEF5"
+    borderColor: Colors.primary,
+    backgroundColor: "#F2F7F7",
   },
-  badgeLocked: {
-    opacity: 0.75
-  },
-  badgeIconBg: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+  badgeIconBox: {
+    width: 52,
+    height: 52,
+    borderRadius: 14,
+    backgroundColor: "#F1F5F9",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10
-  },
-  iconUnlockedBg: {
-    backgroundColor: "#FEF3C7"
-  },
-  iconLockedBg: {
-    backgroundColor: "#F1F5F9"
+    marginBottom: 10,
   },
   badgeTitle: {
-    fontSize: 14,
-    fontWeight: "800",
+    fontFamily: Fonts.bold,
+    fontSize: 13.5,
     color: Colors.textPrimary,
     textAlign: "center",
-    marginBottom: 4
+    marginBottom: 4,
   },
   textLocked: {
-    color: Colors.textSecondary
+    color: Colors.textSecondary,
   },
   badgeDesc: {
-    fontSize: 11,
+    fontFamily: Fonts.regular,
+    fontSize: 11.5,
     color: Colors.textSecondary,
     textAlign: "center",
-    marginBottom: 12,
-    lineHeight: 16
+    lineHeight: 16,
+    marginBottom: 10,
+    minHeight: 32,
   },
-  badgeStatusChip: {
+  badgeStatus: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-    gap: 4
+    gap: 4,
   },
-  chipUnlocked: {
-    backgroundColor: "#ECFDF5"
-  },
-  chipLocked: {
-    backgroundColor: "#F1F5F9"
-  },
-  chipText: {
+  statusText: {
+    fontFamily: Fonts.semiBold,
     fontSize: 11,
-    fontWeight: "800"
   },
-  chipTextUnlocked: {
-    color: Colors.secondary
+  statusUnlocked: {
+    color: Colors.primary,
   },
-  chipTextLocked: {
-    color: Colors.inactive
+  statusLocked: {
+    color: "#94A3B8",
   },
   emptyQuizBox: {
-    backgroundColor: Colors.cardBg,
+    backgroundColor: "#FFFFFF",
     borderRadius: 16,
     padding: 20,
     alignItems: "center",
     gap: 8,
     borderWidth: 1,
-    borderColor: Colors.border,
-    marginBottom: 20
+    borderColor: "#E8EEF3",
+    marginBottom: 20,
   },
   emptyQuizText: {
-    fontSize: 13,
+    fontFamily: Fonts.regular,
+    fontSize: 12.5,
     color: Colors.textSecondary,
-    textAlign: "center"
+    textAlign: "center",
+    lineHeight: 18,
   },
   quizScoreList: {
     gap: 10,
-    marginBottom: 20
+    marginBottom: 20,
   },
   scoreItem: {
-    backgroundColor: Colors.cardBg,
-    borderRadius: 16,
-    padding: 14,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 14,
+    padding: 12,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: Colors.border
+    borderColor: "#E8EEF3",
   },
-  scoreIcon: {
+  scoreIconBox: {
     width: 38,
     height: 38,
     borderRadius: 12,
-    backgroundColor: "#E6F4F1",
+    backgroundColor: "#F1F5F9",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 12
+    marginRight: 12,
+    flexShrink: 0,
   },
   scoreDetails: {
-    flex: 1
+    flex: 1,
+    minWidth: 0,
   },
   scoreQuizId: {
-    fontSize: 14,
-    fontWeight: "800",
-    color: Colors.textPrimary
+    fontFamily: Fonts.bold,
+    fontSize: 13.5,
+    color: Colors.textPrimary,
   },
   scoreText: {
+    fontFamily: Fonts.regular,
     fontSize: 12,
     color: Colors.textSecondary,
-    marginTop: 2
+    marginTop: 2,
   },
   resetButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    padding: 14,
+    padding: 13,
     borderRadius: 14,
-    backgroundColor: "#FEF2F2",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#FCA5A5",
+    borderColor: "#FECACA",
     gap: 8,
-    marginTop: 8
+    marginTop: 4,
+    minHeight: 48,
   },
   resetButtonText: {
-    fontSize: 14,
-    fontWeight: "800",
-    color: Colors.danger
+    fontFamily: Fonts.bold,
+    fontSize: 13.5,
+    color: Colors.danger,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
     alignItems: "center",
-    padding: 24
+    padding: 24,
   },
   modalContainer: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 24,
     alignItems: "center",
-    width: "100%"
+    width: "100%",
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "800",
+    fontFamily: Fonts.bold,
+    fontSize: 17,
     color: Colors.textPrimary,
-    marginVertical: 10
+    marginTop: 12,
+    marginBottom: 8,
   },
   modalDesc: {
+    fontFamily: Fonts.regular,
     fontSize: 13,
     color: Colors.textSecondary,
     textAlign: "center",
-    lineHeight: 18,
-    marginBottom: 20
+    lineHeight: 19,
+    marginBottom: 20,
   },
   modalActions: {
     flexDirection: "row",
-    gap: 12,
-    width: "100%"
+    gap: 10,
+    width: "100%",
   },
   cancelModalBtn: {
     flex: 1,
     padding: 12,
     borderRadius: 12,
     backgroundColor: "#F1F5F9",
-    alignItems: "center"
+    alignItems: "center",
+    minHeight: 46,
+    justifyContent: "center",
   },
   cancelModalText: {
-    fontWeight: "800",
-    color: Colors.textPrimary
+    fontFamily: Fonts.bold,
+    fontSize: 13.5,
+    color: Colors.textPrimary,
   },
   confirmModalBtn: {
     flex: 1,
     padding: 12,
     borderRadius: 12,
     backgroundColor: Colors.danger,
-    alignItems: "center"
+    alignItems: "center",
+    minHeight: 46,
+    justifyContent: "center",
   },
   confirmModalText: {
-    fontWeight: "800",
-    color: "#FFFFFF"
-  }
+    fontFamily: Fonts.bold,
+    fontSize: 13.5,
+    color: "#FFFFFF",
+  },
 });

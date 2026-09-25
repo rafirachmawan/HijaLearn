@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
@@ -12,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Colors, Fonts, Shadows } from "../../constants/theme";
+import { Colors, Fonts } from "../../constants/theme";
 import doaData from "../../data/doa.json";
 import { useAudio } from "../../hooks/useAudio";
 import { getDoaAudioSource } from "../../services/doaAudioMap";
@@ -30,7 +29,7 @@ type DoaItem = {
 
 const CATEGORIES = [
   "Semua",
-  ...Array.from(new Set(doaData.map((d: DoaItem) => d.category))),
+  ...Array.from(new Set((doaData as DoaItem[]).map((d) => d.category))),
 ];
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -44,18 +43,6 @@ const CATEGORY_ICONS: Record<string, string> = {
   Alam: "leaf-outline",
   Keluarga: "people-outline",
   Belajar: "book-outline",
-};
-
-const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
-  Tidur: { bg: "#EDE9FE", text: "#7C3AED" },
-  Kebersihan: { bg: "#E0F2FE", text: "#0284C7" },
-  Makan: { bg: "#FEF3C7", text: "#D97706" },
-  Aktivitas: { bg: "#ECFDF5", text: "#059669" },
-  Perjalanan: { bg: "#FFF7ED", text: "#EA580C" },
-  Ibadah: { bg: "#E6F4F1", text: Colors.primary },
-  Alam: { bg: "#F0FDF4", text: "#16A34A" },
-  Keluarga: { bg: "#FCE7F3", text: "#DB2777" },
-  Belajar: { bg: "#EFF6FF", text: "#2563EB" },
 };
 
 export default function DoaTabScreen() {
@@ -98,111 +85,87 @@ export default function DoaTabScreen() {
   };
 
   const renderDoaItem = ({ item }: { item: DoaItem }) => {
-    const catColor = CATEGORY_COLORS[item.category] || {
-      bg: "#F1F5F9",
-      text: Colors.textSecondary,
-    };
     const isThisPlaying = playingDoaId === item.id && isPlaying;
 
     return (
       <TouchableOpacity
-        style={[
-          styles.doaCard,
-          Shadows.small,
-          isThisPlaying && styles.activeDoaCard,
-        ]}
-        activeOpacity={0.75}
+        style={[styles.doaCard, isThisPlaying && styles.activeDoaCard]}
+        activeOpacity={0.7}
         onPress={() => router.push(`/doa/${item.id}`)}
       >
-        <View style={styles.cardRow}>
-          <View style={[styles.iconCircle, { backgroundColor: catColor.bg }]}>
-            <Ionicons name={item.icon as any} size={22} color={catColor.text} />
-          </View>
-          <View style={styles.cardContent}>
-            <Text style={styles.doaTitle} numberOfLines={1}>
-              {item.title}
-            </Text>
-            <Text style={styles.doaLatin} numberOfLines={2}>
-              {item.latin}
-            </Text>
-            <View
-              style={[styles.categoryPill, { backgroundColor: catColor.bg }]}
-            >
-              <Text style={[styles.categoryPillText, { color: catColor.text }]}>
-                {item.category}
-              </Text>
-            </View>
-          </View>
-
-          {/* Quick Sound Play Button */}
-          <TouchableOpacity
-            style={[
-              styles.audioIconBtn,
-              isThisPlaying && styles.audioIconBtnActive,
-            ]}
-            activeOpacity={0.7}
-            onPress={(e) => {
-              e.stopPropagation();
-              handlePlayDoaSound(item);
-            }}
-          >
-            <Ionicons
-              name={isThisPlaying ? "pause" : "volume-high-outline"}
-              size={18}
-              color={isThisPlaying ? Colors.secondary : Colors.primary}
-            />
-          </TouchableOpacity>
-
-          <View style={styles.arrowBtn}>
-            <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
-          </View>
+        <View style={styles.iconBox}>
+          <Ionicons name={item.icon as any} size={20} color={Colors.primary} />
         </View>
+
+        <View style={styles.cardContent}>
+          <Text style={styles.doaTitle} numberOfLines={1}>
+            {item.title}
+          </Text>
+          <Text style={styles.doaLatin} numberOfLines={1}>
+            {item.latin}
+          </Text>
+          <Text style={styles.doaCategory}>{item.category}</Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.audioBtn}
+          activeOpacity={0.7}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          onPress={(e) => {
+            e.stopPropagation();
+            handlePlayDoaSound(item);
+          }}
+        >
+          <Ionicons
+            name={isThisPlaying ? "pause" : "volume-high-outline"}
+            size={18}
+            color={isThisPlaying ? Colors.primary : "#94A3B8"}
+          />
+        </TouchableOpacity>
+        <Ionicons name="chevron-forward" size={18} color="#CBD5E1" />
       </TouchableOpacity>
     );
   };
 
   return (
     <View style={styles.container}>
-      {/* Header Banner & Search */}
       <View style={styles.headerArea}>
-        {/* Hero Banner Card */}
-        <LinearGradient
-          colors={["#0F766E", "#14B8A6"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={[styles.heroBanner, Shadows.medium]}
-        >
+        <View style={styles.heroBanner}>
           <View style={styles.bannerTopRow}>
             <View style={styles.bannerTitleGroup}>
               <Text style={styles.bannerTitle}>Doa-doa Seharian</Text>
-              <Text style={styles.bannerSubtitle}>20 Doa Harian • Audio & Terjemahan</Text>
+              <Text style={styles.bannerSubtitle}>
+                20 Doa Harian • Audio & Terjemahan
+              </Text>
             </View>
-            <View style={styles.countBadge}>
-              <Ionicons name="sparkles" size={14} color="#0F766E" />
-              <Text style={styles.countBadgeText}>20 Doa</Text>
-            </View>
+            <Text style={styles.countBadge}>20 Doa</Text>
           </View>
-        </LinearGradient>
+        </View>
 
-        {/* Search Bar */}
-        <View style={[styles.searchBar, Shadows.small]}>
-          <Ionicons name="search" size={20} color={Colors.primary} />
+        <View style={styles.searchBar}>
+          <Ionicons name="search-outline" size={18} color="#94A3B8" />
           <TextInput
             style={styles.searchInput}
             placeholder="Cari doa..."
-            placeholderTextColor={Colors.textSecondary}
+            placeholderTextColor="#94A3B8"
             value={search}
             onChangeText={setSearch}
           />
           {search.length > 0 && (
-            <TouchableOpacity onPress={() => setSearch("")} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-              <Ionicons name="close-circle" size={18} color={Colors.textSecondary} />
+            <TouchableOpacity
+              onPress={() => setSearch("")}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons
+                name="close-circle"
+                size={18}
+                color={Colors.textSecondary}
+              />
             </TouchableOpacity>
           )}
         </View>
       </View>
 
-      {/* Category Filter Chips - Horizontal Scroll Bar */}
       <View style={styles.categoryScrollContainer}>
         <ScrollView
           horizontal
@@ -212,37 +175,19 @@ export default function DoaTabScreen() {
           {CATEGORIES.map((item) => {
             const isActive = item === activeCategory;
             const icon = CATEGORY_ICONS[item] || "apps-outline";
-            const catColor = CATEGORY_COLORS[item] || {
-              bg: "#E6F4F1",
-              text: Colors.primary,
-            };
 
             return (
               <TouchableOpacity
                 key={item}
-                style={[
-                  styles.chip,
-                  isActive
-                    ? styles.chipActive
-                    : { backgroundColor: Colors.cardBg, borderColor: Colors.border },
-                ]}
+                style={[styles.chip, isActive && styles.chipActive]}
                 activeOpacity={0.75}
                 onPress={() => setActiveCategory(item)}
               >
-                <View
-                  style={[
-                    styles.chipIconBg,
-                    isActive
-                      ? { backgroundColor: "rgba(255,255,255,0.25)" }
-                      : { backgroundColor: catColor.bg },
-                  ]}
-                >
-                  <Ionicons
-                    name={icon as any}
-                    size={14}
-                    color={isActive ? "#FFFFFF" : catColor.text}
-                  />
-                </View>
+                <Ionicons
+                  name={icon as any}
+                  size={14}
+                  color={isActive ? "#FFFFFF" : Colors.primary}
+                />
                 <Text
                   style={[styles.chipText, isActive && styles.chipTextActive]}
                 >
@@ -254,12 +199,8 @@ export default function DoaTabScreen() {
         </ScrollView>
       </View>
 
-      {/* Doa Count */}
-      <View style={styles.countRow}>
-        <Text style={styles.countText}>{filteredDoa.length} doa ditemukan</Text>
-      </View>
+      <Text style={styles.countRow}>{filteredDoa.length} doa ditemukan</Text>
 
-      {/* Doa List */}
       <FlatList
         data={filteredDoa}
         keyExtractor={(item) => item.id.toString()}
@@ -271,7 +212,11 @@ export default function DoaTabScreen() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Ionicons name="search-outline" size={48} color={Colors.inactive} />
+            <Ionicons
+              name="search-outline"
+              size={40}
+              color={Colors.inactive}
+            />
             <Text style={styles.emptyText}>Doa tidak ditemukan</Text>
             <Text style={styles.emptySubText}>
               Coba kata kunci lain atau ubah filter kategori
@@ -290,208 +235,180 @@ const styles = StyleSheet.create({
   },
   headerArea: {
     padding: 16,
+    paddingBottom: 8,
     gap: 12,
-    backgroundColor: Colors.background,
   },
   heroBanner: {
+    backgroundColor: Colors.primary,
     borderRadius: 20,
-    padding: 16,
-    gap: 14,
+    padding: 18,
   },
   bannerTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
+    gap: 12,
   },
   bannerTitleGroup: {
     flex: 1,
-    marginRight: 8,
   },
   bannerTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
     color: "#FFFFFF",
+    letterSpacing: -0.1,
   },
   bannerSubtitle: {
-    fontFamily: Fonts.medium,
-    fontSize: 11,
-    color: "#CCFBF1",
-    marginTop: 2,
+    fontFamily: Fonts.regular,
+    fontSize: 12,
+    color: "rgba(255,255,255,0.7)",
+    marginTop: 3,
+    lineHeight: 17,
   },
   countBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 14,
-  },
-  countBadgeText: {
     fontFamily: Fonts.bold,
     fontSize: 12,
-    color: "#0F766E",
+    color: "#FFFFFF",
+    backgroundColor: "rgba(255,255,255,0.15)",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    overflow: "hidden",
+    fontVariant: ["tabular-nums"],
   },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    paddingHorizontal: 14,
-    height: 48,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    height: 46,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: "#E8EEF3",
+    gap: 8,
   },
   searchInput: {
     flex: 1,
     fontFamily: Fonts.medium,
-    fontSize: 14,
+    fontSize: 13.5,
     color: Colors.textPrimary,
-    marginLeft: 10,
+    includeFontPadding: false,
   },
   categoryScrollContainer: {
-    marginVertical: 4,
+    paddingVertical: 4,
   },
   categoryScrollContent: {
     paddingHorizontal: 16,
     gap: 8,
-    alignItems: "center",
   },
   chip: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
+    paddingVertical: 8,
+    borderRadius: 999,
     borderWidth: 1,
+    borderColor: "#E8EEF3",
+    backgroundColor: "#FFFFFF",
     gap: 6,
+    minHeight: 36,
   },
   chipActive: {
     backgroundColor: Colors.primary,
     borderColor: Colors.primary,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  chipIconBg: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    justifyContent: "center",
-    alignItems: "center",
   },
   chipText: {
     fontFamily: Fonts.semiBold,
     fontSize: 12,
-    color: Colors.textSecondary,
+    color: Colors.textPrimary,
   },
   chipTextActive: {
-    fontFamily: Fonts.bold,
     color: "#FFFFFF",
   },
   countRow: {
-    paddingHorizontal: 16,
-    paddingTop: 4,
-    paddingBottom: 6,
-  },
-  countText: {
-    fontFamily: Fonts.medium,
-    fontSize: 11.5,
+    fontFamily: Fonts.regular,
+    fontSize: 12,
     color: Colors.textSecondary,
+    paddingHorizontal: 16,
+    paddingTop: 6,
+    paddingBottom: 8,
   },
   listContent: {
     paddingHorizontal: 16,
-    gap: 8,
+    gap: 10,
   },
   doaCard: {
-    backgroundColor: Colors.cardBg,
-    borderRadius: 14,
-    paddingVertical: 10,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
     paddingHorizontal: 12,
+    paddingVertical: 12,
     borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  activeDoaCard: {
-    borderColor: Colors.secondary,
-    backgroundColor: "#F0FDF4",
-  },
-  audioIconBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 10,
-    backgroundColor: "#E6F4F1",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 6,
-  },
-  audioIconBtnActive: {
-    backgroundColor: "#DCFCE7",
-  },
-  cardRow: {
+    borderColor: "#E8EEF3",
     flexDirection: "row",
     alignItems: "center",
+    gap: 10,
+    minHeight: 68,
   },
-  iconCircle: {
+  activeDoaCard: {
+    borderColor: Colors.primary,
+    backgroundColor: "#F2F7F7",
+  },
+  iconBox: {
     width: 40,
     height: 40,
     borderRadius: 12,
+    backgroundColor: "#F1F5F9",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
+    flexShrink: 0,
   },
   cardContent: {
     flex: 1,
+    minWidth: 0,
   },
   doaTitle: {
     fontFamily: Fonts.bold,
-    fontSize: 13.5,
+    fontSize: 14,
     color: Colors.textPrimary,
-    marginBottom: 1,
+    marginBottom: 2,
+    letterSpacing: -0.1,
   },
   doaLatin: {
     fontFamily: Fonts.regular,
-    fontSize: 11.5,
-    lineHeight: 16,
+    fontSize: 12,
     color: Colors.textSecondary,
     fontStyle: "italic",
-    marginBottom: 4,
+    marginBottom: 3,
   },
-  categoryPill: {
-    alignSelf: "flex-start",
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  categoryPillText: {
+  doaCategory: {
     fontFamily: Fonts.semiBold,
-    fontSize: 9.5,
+    fontSize: 11,
+    color: "#94A3B8",
   },
-  arrowBtn: {
-    width: 30,
-    height: 30,
-    borderRadius: 9,
-    backgroundColor: "#E6F4F1",
+  audioBtn: {
+    width: 32,
+    height: 32,
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 6,
+    flexShrink: 0,
   },
   emptyState: {
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 60,
     gap: 8,
+    paddingHorizontal: 32,
   },
   emptyText: {
     fontFamily: Fonts.bold,
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.textPrimary,
   },
   emptySubText: {
     fontFamily: Fonts.regular,
-    fontSize: 13,
+    fontSize: 12.5,
     color: Colors.textSecondary,
     textAlign: "center",
+    lineHeight: 18,
   },
 });

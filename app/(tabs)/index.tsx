@@ -8,9 +8,45 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Colors, Fonts, Shadows } from "../../constants/theme";
+import { Colors, Fonts } from "../../constants/theme";
 import { useNetwork } from "../../hooks/useNetwork";
 import { useProgress } from "../../hooks/useProgress";
+
+const MENU = [
+  {
+    id: "hijaiyah",
+    title: "Belajar Hijaiyah",
+    desc: "28 Huruf dasar • Harakat • Audio",
+    icon: "grid-outline" as const,
+    arabic: "أ",
+    route: "/(tabs)/hijaiyah" as const,
+    count: "28",
+  },
+  {
+    id: "surat",
+    title: "Surat-surat Pendek",
+    desc: "Juz 30 • Terjemahan • Audio Ayat",
+    icon: "book-outline" as const,
+    route: "/(tabs)/surat" as const,
+    count: "37",
+  },
+  {
+    id: "doa",
+    title: "Doa-doa Seharian",
+    desc: "20 Doa Harian • Arab • Latin • Arti",
+    icon: "heart-outline" as const,
+    route: "/doa" as const,
+    count: "20",
+  },
+  {
+    id: "kuis",
+    title: "Kuis Interaktif",
+    desc: "Uji Hafalan • Bintang • Badge",
+    icon: "extension-puzzle-outline" as const,
+    route: "/kuis/hijaiyah/1" as const,
+    count: "",
+  },
+] as const;
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -26,71 +62,63 @@ export default function HomeScreen() {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      {/* Offline Alert Banner */}
       {!isConnected && (
         <View style={styles.offlineBanner}>
-          <Ionicons name="wifi-outline" size={20} color="#FFFFFF" />
+          <Ionicons name="cloud-offline-outline" size={16} color="#FFFFFF" />
           <Text style={styles.offlineText}>
-            Mode Offline: Modul Hijaiyah & data tersimpan tetap aktif!
+            Offline — materi tersimpan tetap bisa dibuka
           </Text>
         </View>
       )}
 
-      {/* HERO WELCOME CARD */}
+      {/* Hero — satu aksen, tanpa pill statistik ganda */}
       <View style={styles.heroCard}>
-        <Text style={styles.heroGreeting}>Assalamu'alaikum</Text>
+        <Text style={styles.heroGreeting}>Assalamu&apos;alaikum</Text>
         <Text style={styles.heroTitle}>
           Mari Belajar Hijaiyah & Surat Pendek
         </Text>
         <Text style={styles.heroSubtitle}>
-          Media belajar interaktif tanpa login
+          Tanpa login • {completedLetters.length}/28 huruf •{" "}
+          {completedSurahs.length}/10 surat • {unlockedBadges.length} badge
         </Text>
 
-        <View style={styles.heroStatsRow}>
-          <View style={styles.heroStatItem}>
-            <Ionicons name="trophy" size={16} color={Colors.accent} />
-            <Text style={styles.heroStatText}>{unlockedBadges.length}</Text>
-          </View>
-          <View style={styles.heroStatItem}>
-            <Ionicons name="grid" size={16} color={Colors.accent} />
-            <Text style={styles.heroStatText}>{completedLetters.length}</Text>
-          </View>
-          <View style={styles.heroStatItem}>
-            <Ionicons name="book" size={16} color={Colors.accent} />
-            <Text style={styles.heroStatText}>{completedSurahs.length}</Text>
-          </View>
-        </View>
+        <TouchableOpacity
+          style={styles.heroCta}
+          activeOpacity={0.85}
+          onPress={() => router.push("/(tabs)/hijaiyah")}
+        >
+          <Text style={styles.heroCtaText}>Lanjutkan Belajar</Text>
+          <Ionicons name="arrow-forward" size={16} color={Colors.primary} />
+        </TouchableOpacity>
       </View>
 
-      {/* PROGRESS DASHBOARD - SQUARED CARDS */}
+      {/* Progres */}
       <View style={styles.sectionHeaderRow}>
         <Text style={styles.sectionTitle}>Progres Belajar</Text>
-        <TouchableOpacity onPress={() => router.push("/(tabs)/progres")}>
-          <Text style={styles.seeAllText}>Lihat Detail ›</Text>
+        <TouchableOpacity
+          onPress={() => router.push("/(tabs)/progres")}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Text style={styles.seeAllText}>Lihat Detail</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.progressContainer}>
-        {/* Hijaiyah Card - Squared Design */}
         <TouchableOpacity
-          style={styles.squaredCard}
+          style={styles.progressCard}
           activeOpacity={0.8}
           onPress={() => router.push("/(tabs)/hijaiyah")}
         >
-          <View style={styles.cardHeader}>
-            <View style={[styles.iconBadge, { backgroundColor: "#E6F4F1" }]}>
-              <Ionicons name="grid" size={28} color={Colors.primary} />
+          <View style={styles.progressTop}>
+            <View style={styles.iconBox}>
+              <Ionicons name="grid-outline" size={22} color={Colors.primary} />
             </View>
             <Text style={styles.percentText}>{hijaiyahPercent}%</Text>
           </View>
-
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>Huruf Hijaiyah</Text>
-            <Text style={styles.cardSubtext}>
-              {completedLetters.length} / 28 Huruf
-            </Text>
-          </View>
-
+          <Text style={styles.cardTitle}>Huruf Hijaiyah</Text>
+          <Text style={styles.cardSubtext}>
+            {completedLetters.length} / 28 Huruf
+          </Text>
           <View style={styles.progressBarOuter}>
             <View
               style={[
@@ -101,157 +129,76 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
 
-        {/* Surat Card - Squared Design */}
         <TouchableOpacity
-          style={styles.squaredCard}
+          style={styles.progressCard}
           activeOpacity={0.8}
           onPress={() => router.push("/(tabs)/surat")}
         >
-          <View style={styles.cardHeader}>
-            <View style={[styles.iconBadge, { backgroundColor: "#ECFDF5" }]}>
-              <Ionicons name="book" size={28} color={Colors.secondary} />
+          <View style={styles.progressTop}>
+            <View style={styles.iconBox}>
+              <Ionicons name="book-outline" size={22} color={Colors.primary} />
             </View>
-            <Text style={[styles.percentText, { color: Colors.secondary }]}>
-              {surahPercent}%
-            </Text>
+            <Text style={styles.percentText}>{surahPercent}%</Text>
           </View>
-
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>Surat Pendek</Text>
-            <Text style={styles.cardSubtext}>
-              {completedSurahs.length} / 10 Surat
-            </Text>
-          </View>
-
+          <Text style={styles.cardTitle}>Surat Pendek</Text>
+          <Text style={styles.cardSubtext}>
+            {completedSurahs.length} / 10 Surat
+          </Text>
           <View style={styles.progressBarOuter}>
             <View
               style={[
                 styles.progressBarInner,
-                {
-                  width: `${Math.min(surahPercent, 100)}%`,
-                  backgroundColor: Colors.secondary,
-                },
+                { width: `${Math.min(surahPercent, 100)}%` },
               ]}
             />
           </View>
         </TouchableOpacity>
       </View>
 
-      {/* Section: Menu Pembelajaran */}
+      {/* Menu — satu grup list, ikon monokrom */}
       <View style={styles.sectionHeaderRow}>
         <Text style={styles.sectionTitle}>Menu Pembelajaran</Text>
       </View>
 
-      <View style={styles.menuList}>
-        {/* Menu 1: Hijaiyah */}
-        <TouchableOpacity
-          style={[styles.menuCard, Shadows.small]}
-          activeOpacity={0.75}
-          onPress={() => router.push("/(tabs)/hijaiyah")}
-        >
-          <View style={styles.menuLeftGroup}>
-            <View style={[styles.menuIconBg, { backgroundColor: "#E6F4F1" }]}>
-              <Text
-                style={[styles.arabicLetterIcon, { color: Colors.primary }]}
-              >
-                أ
-              </Text>
+      <View style={styles.menuGroup}>
+        {MENU.map((m, idx) => (
+          <TouchableOpacity
+            key={m.id}
+            style={[
+              styles.menuRow,
+              idx < MENU.length - 1 && styles.menuRowBorder,
+            ]}
+            activeOpacity={0.7}
+            onPress={() => router.push(m.route as any)}
+          >
+            <View style={styles.menuIconBox}>
+              {m.id === "hijaiyah" ? (
+                <Text style={styles.arabicIcon}>أ</Text>
+              ) : (
+                <Ionicons name={m.icon} size={20} color={Colors.primary} />
+              )}
             </View>
             <View style={styles.menuContent}>
-              <Text style={styles.menuTitle}>Belajar Hijaiyah</Text>
-              <Text style={styles.menuDesc}>
-                28 Huruf dasar • Harakat • Audio
+              <Text style={styles.menuTitle}>{m.title}</Text>
+              <Text style={styles.menuDesc} numberOfLines={1}>
+                {m.desc}
               </Text>
             </View>
-          </View>
-          <View style={styles.menuArrowBtn}>
-            <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
-          </View>
-        </TouchableOpacity>
-
-        {/* Menu 2: Surat Pendek */}
-        <TouchableOpacity
-          style={[styles.menuCard, Shadows.small]}
-          activeOpacity={0.75}
-          onPress={() => router.push("/(tabs)/surat")}
-        >
-          <View style={styles.menuLeftGroup}>
-            <View style={[styles.menuIconBg, { backgroundColor: "#ECFDF5" }]}>
-              <Ionicons
-                name="book-outline"
-                size={24}
-                color={Colors.secondary}
-              />
-            </View>
-            <View style={styles.menuContent}>
-              <Text style={styles.menuTitle}>Surat-surat Pendek</Text>
-              <Text style={styles.menuDesc}>
-                Juz 30 • Terjemahan • Audio Ayat
-              </Text>
-            </View>
-          </View>
-          <View style={styles.menuArrowBtn}>
-            <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
-          </View>
-        </TouchableOpacity>
-
-        {/* Menu 3: Doa Seharian */}
-        <TouchableOpacity
-          style={[styles.menuCard, Shadows.small]}
-          activeOpacity={0.75}
-          onPress={() => router.push("/doa")}
-        >
-          <View style={styles.menuLeftGroup}>
-            <View style={[styles.menuIconBg, { backgroundColor: "#FCE7F3" }]}>
-              <Ionicons name="heart-outline" size={24} color="#DB2777" />
-            </View>
-            <View style={styles.menuContent}>
-              <Text style={styles.menuTitle}>Doa-doa Seharian</Text>
-              <Text style={styles.menuDesc}>
-                20 Doa Harian • Arab • Latin • Arti
-              </Text>
-            </View>
-          </View>
-          <View style={styles.menuArrowBtn}>
-            <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
-          </View>
-        </TouchableOpacity>
-
-        {/* Menu 4: Kuis */}
-        <TouchableOpacity
-          style={[styles.menuCard, Shadows.small]}
-          activeOpacity={0.75}
-          onPress={() => router.push("/kuis/hijaiyah/1")}
-        >
-          <View style={styles.menuLeftGroup}>
-            <View style={[styles.menuIconBg, { backgroundColor: "#FEF3C7" }]}>
-              <Ionicons
-                name="extension-puzzle-outline"
-                size={24}
-                color="#D97706"
-              />
-            </View>
-            <View style={styles.menuContent}>
-              <Text style={styles.menuTitle}>Kuis & Game Interaktif</Text>
-              <Text style={styles.menuDesc}>Uji Hafalan • Bintang • Badge</Text>
-            </View>
-          </View>
-          <View style={styles.menuArrowBtn}>
-            <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
-          </View>
-        </TouchableOpacity>
+            {m.count ? (
+              <Text style={styles.menuCount}>{m.count}</Text>
+            ) : null}
+            <Ionicons name="chevron-forward" size={18} color="#CBD5E1" />
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* Quote Banner */}
-      <View style={styles.quoteCard}>
-        <View style={styles.quoteIconBg}>
-          <Ionicons name="sparkles" size={20} color={Colors.primary} />
-        </View>
+      {/* Quote — editorial, tanpa kartu kuning */}
+      <View style={styles.quoteBlock}>
         <Text style={styles.quoteText}>
-          "Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan
-          mengajarkannya."
+          “Sebaik-baik kalian adalah orang yang mempelajari Al-Qur&apos;an dan
+          mengajarkannya.”
         </Text>
-        <Text style={styles.quoteAuthor}>— HR. Bukhari</Text>
+        <Text style={styles.quoteAuthor}>HR. Bukhari</Text>
       </View>
     </ScrollView>
   );
@@ -260,231 +207,228 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: "#FFFFFF",
   },
   content: {
     padding: 16,
     paddingBottom: 140,
+    backgroundColor: Colors.background,
   },
   offlineBanner: {
-    backgroundColor: Colors.danger,
-    padding: 12,
-    borderRadius: 14,
+    backgroundColor: "#334155",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 12,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
-    gap: 10,
+    marginBottom: 12,
+    gap: 8,
   },
   offlineText: {
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.semiBold,
     color: "#FFFFFF",
-    fontSize: 13,
+    fontSize: 12,
     flex: 1,
   },
-  // HERO CARD
   heroCard: {
     backgroundColor: Colors.primary,
-    borderRadius: 24,
-    padding: 24,
+    borderRadius: 20,
+    padding: 20,
     marginBottom: 20,
   },
   heroGreeting: {
     fontFamily: Fonts.semiBold,
-    color: Colors.accent,
-    fontSize: 15,
-    marginBottom: 8,
+    color: "rgba(255,255,255,0.7)",
+    fontSize: 13,
+    marginBottom: 6,
+    letterSpacing: 0.2,
   },
   heroTitle: {
     fontFamily: Fonts.extraBold,
     color: "#FFFFFF",
-    fontSize: 20,
+    fontSize: 22,
     lineHeight: 28,
-    marginBottom: 6,
+    letterSpacing: -0.3,
+    marginBottom: 8,
   },
   heroSubtitle: {
     fontFamily: Fonts.regular,
-    color: "rgba(255, 255, 255, 0.9)",
-    fontSize: 14,
-    marginBottom: 20,
+    color: "rgba(255,255,255,0.75)",
+    fontSize: 13,
+    lineHeight: 19,
+    marginBottom: 16,
   },
-  heroStatsRow: {
+  heroCta: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-  },
-  heroStatItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 12,
+    alignSelf: "flex-start",
     gap: 6,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 999,
+    minHeight: 40,
   },
-  heroStatText: {
-    fontFamily: Fonts.semiBold,
-    color: "#FFFFFF",
-    fontSize: 14,
+  heroCtaText: {
+    fontFamily: Fonts.bold,
+    color: Colors.primary,
+    fontSize: 13.5,
   },
   sectionHeaderRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 10,
+    paddingHorizontal: 2,
   },
   sectionTitle: {
     fontFamily: Fonts.bold,
-    fontSize: 17,
+    fontSize: 15,
     color: Colors.textPrimary,
+    letterSpacing: -0.1,
   },
   seeAllText: {
-    fontFamily: Fonts.bold,
-    fontSize: 13,
+    fontFamily: Fonts.semiBold,
+    fontSize: 12.5,
     color: Colors.primary,
   },
-  // PROGRESS DASHBOARD - SQUARED CARDS
   progressContainer: {
     flexDirection: "row",
-    gap: 16,
-    marginBottom: 24,
+    gap: 12,
+    marginBottom: 22,
   },
-  squaredCard: {
+  progressCard: {
     flex: 1,
-    backgroundColor: Colors.cardBg,
-    borderRadius: 20,
-    padding: 18,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: "#E8EEF3",
   },
-  cardHeader: {
+  progressTop: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 14,
+    marginBottom: 12,
   },
-  iconBadge: {
-    width: 52,
-    height: 52,
-    borderRadius: 14,
+  iconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: "#F1F5F9",
     justifyContent: "center",
     alignItems: "center",
   },
   percentText: {
     fontFamily: Fonts.extraBold,
-    fontSize: 28,
-    color: Colors.textPrimary,
-  },
-  cardContent: {
-    marginBottom: 16,
+    fontSize: 22,
+    color: Colors.primary,
+    fontVariant: ["tabular-nums"],
   },
   cardTitle: {
     fontFamily: Fonts.bold,
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.textPrimary,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   cardSubtext: {
     fontFamily: Fonts.regular,
-    fontSize: 13,
+    fontSize: 12,
     color: Colors.textSecondary,
+    marginBottom: 12,
   },
   progressBarOuter: {
-    height: 8,
-    backgroundColor: "#E2E8F0",
-    borderRadius: 4,
+    height: 6,
+    backgroundColor: "#F1F5F9",
+    borderRadius: 3,
     overflow: "hidden",
   },
   progressBarInner: {
     height: "100%",
     backgroundColor: Colors.primary,
-    borderRadius: 4,
+    borderRadius: 3,
   },
-
-  // MENU PEMBELAJARAN
-  menuList: {
-    gap: 16,
-    marginBottom: 24,
-  },
-  menuCard: {
-    backgroundColor: Colors.cardBg,
-    borderRadius: 20,
-    padding: 18,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  menuLeftGroup: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  menuIconBg: {
-    width: 56,
-    height: 56,
+  menuGroup: {
+    backgroundColor: "#FFFFFF",
     borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#E8EEF3",
+    marginBottom: 8,
+    overflow: "hidden",
+  },
+  menuRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    gap: 12,
+    minHeight: 64,
+  },
+  menuRowBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  menuIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#F1F5F9",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    flexShrink: 0,
   },
-  arabicLetterIcon: {
+  arabicIcon: {
     fontFamily: Fonts.bold,
-    fontSize: 28,
+    fontSize: 22,
+    color: Colors.primary,
+    includeFontPadding: false,
   },
   menuContent: {
     flex: 1,
+    minWidth: 0,
   },
   menuTitle: {
     fontFamily: Fonts.bold,
-    fontSize: 16,
+    fontSize: 14.5,
     color: Colors.textPrimary,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   menuDesc: {
     fontFamily: Fonts.regular,
-    fontSize: 13,
+    fontSize: 12.5,
     color: Colors.textSecondary,
   },
-  menuArrowBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 14,
-    backgroundColor: Colors.primaryLight,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 12,
+  menuCount: {
+    fontFamily: Fonts.bold,
+    fontSize: 12,
+    color: "#94A3B8",
+    backgroundColor: "#F8FAFC",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 999,
+    overflow: "hidden",
   },
-  quoteCard: {
-    backgroundColor: Colors.accentLight,
-    borderRadius: 20,
-    padding: 18,
+  quoteBlock: {
+    marginTop: 8,
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    borderTopWidth: 1,
+    borderTopColor: "#EDF2F7",
     alignItems: "center",
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#FCD34D",
-  },
-  quoteIconBg: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 8,
   },
   quoteText: {
     fontFamily: Fonts.medium,
     fontSize: 13,
     fontStyle: "italic",
-    color: Colors.textPrimary,
+    color: Colors.textSecondary,
     textAlign: "center",
     lineHeight: 20,
     marginBottom: 6,
   },
   quoteAuthor: {
     fontFamily: Fonts.bold,
-    fontSize: 12,
+    fontSize: 11.5,
     color: Colors.primary,
+    letterSpacing: 0.4,
   },
 });
